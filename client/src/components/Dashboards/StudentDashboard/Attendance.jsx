@@ -15,18 +15,23 @@ function Attendance() {
       const data = await res.json();
       if(data.success){
         let daysOff = 0;
+        let unmarked = 0;
         let thisWeek = [];
         data.attendance.map((day) => {
           if(day.status === "absent"){
             daysOff++;
           }
+          if(day.status === "unmarked"){
+            unmarked++;
+          }
           if (new Date(day.date) >= new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)) {
             thisWeek.push(
-              { weekdate: new Date(day.date).toLocaleDateString('en-US', {day: 'numeric', month: 'long', year: 'numeric'}), weekday: new Date(day.date).toLocaleDateString('en-PK', {weekday:"long"}), present: day.status === "present" }
+              { weekdate: new Date(day.date).toLocaleDateString('en-US', {day: 'numeric', month: 'long', year: 'numeric'}), weekday: new Date(day.date).toLocaleDateString('en-PK', {weekday:"long"}), status: day.status }
             );
           }
         });
         setDaysOff(daysOff);
+        setUnmarked(unmarked);
         setThisWeek(thisWeek);
         setTotalDays(data.attendance.length);
       }
@@ -35,9 +40,10 @@ function Attendance() {
       }
     };
   const [daysOff, setDaysOff] = useState(0); //!Fetch from database
+  const [unmarked, setUnmarked] = useState(0); //!Fetch from database
   const [thisWeek, setThisWeek] = useState([]); //!Fetch from database
 
-  const labels = ["Days off", "Days present"];
+  const labels = ["Days off", "Days present", "Unmarked"];
 
   useEffect(() => {
     getAttendance();
@@ -47,8 +53,9 @@ function Attendance() {
       <h1 className="text-white font-bold text-5xl">Attendance</h1>
       <ul className="flex gap-5 text-white text-xl px-5 sm:p-0 text-center">
         <li>Total Days: {totalDays}</li>
-        <li>Present Days: {totalDays - daysOff}</li>
+        <li>Present Days: {totalDays - daysOff - unmarked}</li>
         <li>Absent days: {daysOff}</li>
+        <li>Unmarked days: {unmarked}</li>
       </ul>
       <div className="flex gap-5 flex-wrap max-h-96 justify-center items-center">
         <Doughnut
@@ -58,8 +65,8 @@ function Attendance() {
             datasets: [
               {
                 label: "days",
-                data: [daysOff, totalDays - daysOff],
-                backgroundColor: ["#F26916", "#1D4ED8"],
+                data: [daysOff, totalDays - daysOff - unmarked, unmarked],
+                backgroundColor: ["#F26916", "#1D4ED8", "#808080"],
                 barThickness: 40,
                 borderRadius: 5,
                 borderColor: "rgba(0,0,0,0)",
@@ -78,10 +85,10 @@ function Attendance() {
                     <p className="text-sm font-medium truncate text-white">
                       {day.weekday} -- {day.weekdate}
                     </p>
-                    <p className="text-sm truncate text-gray-400">{day.present?"Present":"Absent"}</p>
+                    <p className="text-sm truncate text-gray-400">{day.status}</p>
                   </div>
                   <div className="flex flex-col items-center text-base font-semibold text-white">
-                    {day.present ? (
+                    {day.status === "present" && (
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -96,7 +103,8 @@ function Attendance() {
                           d="M4.5 12.75l6 6 9-13.5"
                         />
                       </svg>
-                    ) : (
+                    )}
+                    {day.status === "absent" && (
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -111,6 +119,22 @@ function Attendance() {
                           d="M6 18L18 6M6 6l12 12"
                         />
                       </svg>
+                    )}
+                    {day.status === "unmarked" && (
+                      <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
                     )}
                   </div>
                 </div>
