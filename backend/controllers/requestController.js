@@ -13,8 +13,14 @@ const register = async (req, res) => {
         if(request) {
             return res.status(400).json({ errors: [{ msg: 'Request already exists' }] });
         }
+
+        const [y, m, d] = dob.split('-');
+        const day = parseInt(d);
+        const month = parseInt(m);
+        const year = parseInt(y);
+        const date = new Date(year, month, day);
         const newRequest = new Request({
-            student_id, name, batch, dept, course, email, contact, dob, father_name, father_contact, address, password
+            student_id, name, batch, dept, course, email, contact, dob: date, father_name, father_contact, address, password
         });
         await newRequest.save();
         // Emit the new request using the socket utility
