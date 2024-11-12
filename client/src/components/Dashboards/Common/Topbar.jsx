@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { io } from "socket.io-client";
+import { toast } from "react-toastify";
 
 Topbar.propTypes = {
   name: PropTypes.string,
@@ -10,6 +12,35 @@ Topbar.propTypes = {
 
 function Topbar({ name }) {
   const navigate = useNavigate();
+  const [socket, setSocket] = useState(null);
+
+  const fetchNotifications = async () => {
+    const response = await fetch(`http://localhost:3000/api/admin/get-notifications`);
+    return response.json();
+  };
+
+  const { data: notificationsData, isLoading, refetch } = useQuery({
+    queryKey: ["notifications"],
+    queryFn: () => fetchNotifications(),
+  });
+
+  useEffect(() => {
+    const newSocket = io("http://localhost:3000");
+    setSocket(newSocket);
+
+    return () => newSocket.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('newRequest', (newRequest) => {
+        toast.info("New registration request received");
+        // Invalidate and refetch notifications
+        refetch();
+      });
+    }
+  }, [socket]);
+
   let logout = () => {
     localStorage.removeItem("admin");
     localStorage.removeItem("hostel");
@@ -19,16 +50,6 @@ function Topbar({ name }) {
   };
 
   const [date, setDate] = useState(new Date());
-
-  const fetchNotifications = async () => {
-    const response = await fetch(`http://localhost:3000/api/admin/get-notifications`);
-    return response.json();
-  };
-
-  const { data: notificationsData, isLoading, isError } = useQuery({
-    queryKey: ["notifications"],
-    queryFn: () => fetchNotifications(),
-  });
 
   function refreshClock() {
     setDate(new Date());
@@ -74,6 +95,9 @@ function Topbar({ name }) {
           </svg>
         </Link>
         <div className="relative group cursor-pointer">
+          <span className="text-xs flex justify-center items-center absolute -right-1 -top-1 text-center rounded-full w-4 h-4 bg-white text-black group-hover:text-white group-hover:bg-blue-500">
+            {notificationsData?.notifications?.length}
+          </span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -99,25 +123,6 @@ function Topbar({ name }) {
                   <p className="text-sm font-semibold truncate">
                     New account request from {noti?.name}
                   </p>
-                  <span className="group/edit relative flex">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-5 h-5 hover:fill-neutral-500 hover:scale-125 transition-all"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M21.75 9v.906a2.25 2.25 0 01-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 001.183 1.981l6.478 3.488m8.839 2.51l-4.66-2.51m0 0l-1.023-.55a2.25 2.25 0 00-2.134 0l-1.022.55m0 0l-4.661 2.51m16.5 1.615a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V8.844a2.25 2.25 0 011.183-1.98l7.5-4.04a2.25 2.25 0 012.134 0l7.5 4.04a2.25 2.25 0 011.183 1.98V19.5z"
-                      />
-                    </svg>
-                    <span className="text-md hidden absolute w-32 -left-12 top-7 bg-black text-center group-hover/edit:block rounded">
-                      Mark as read.
-                    </span>
-                  </span>
                 </li>
               ))}
             </ul>}
