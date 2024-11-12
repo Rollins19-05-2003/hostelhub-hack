@@ -7,13 +7,13 @@ const register = async (req, res) => {
         return res.status(400).json({ errors: errors.array() })
     }
     try {
-        const { cms_id } = req.body;
-        const request = await Request.findOne({ cms_id });
+        const { student_id, name, batch, dept, course, email, contact, dob, father_name, father_contact, address} = req.body;
+        const request = await Request.findOne({ student_id });
         if(request) {
             return res.status(400).json({ errors: [{ msg: 'Request already exists' }] });
         }
         const newRequest = new Request({
-            cms_id
+            student_id, name, batch, dept, course, email, contact, dob, father_name, father_contact, address
         });
         await newRequest.save();
         res.json(newRequest);

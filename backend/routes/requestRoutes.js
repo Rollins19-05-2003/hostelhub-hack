@@ -7,7 +7,7 @@ const { register, getAll } = require('../controllers/requestController');
 // @desc    Register request
 // @access  Public
 router.post('/register', [
-    check('cms_id', 'CMS ID is required').not().isEmpty()
+    check('student_id', 'Student ID is required').not().isEmpty()
 ], register);
 
 // @route   GET api/request/getall
