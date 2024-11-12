@@ -78,15 +78,13 @@ const registerAdmin = async (req, res) => {
             if (admin) {
                 return res.status(400).json({success, errors: [{msg: 'Admin already exists'}]});
             }
-            console.log(hostel)
 
-            let shostel = await Hostel.find().where({_id : hostel});
-            console.log(shostel)
+            let shostel = await Hostel.findOne({_id : hostel});
 
             if (!shostel) {
                 return res.status(400).json({success, errors: [{msg: 'Hostel not found'}]});
             }
-
+            
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -106,7 +104,7 @@ const registerAdmin = async (req, res) => {
                 address,
                 dob,
                 user: user.id,
-                hostel: shostel.id
+                hostel: shostel._id
             });
 
             await admin.save();

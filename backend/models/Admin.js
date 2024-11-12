@@ -33,7 +33,7 @@ const AdminSchema = new Schema({
     },
     hostel:{
         type:Schema.Types.ObjectId,
-        ref:'hostel'
+        ref:'hostel',
     },
     date:{
         type:Date,
