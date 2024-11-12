@@ -13,7 +13,6 @@ router.post('/register-admin', [
     check('contact', 'Enter a valid contact number').isLength(11),
     check('address', 'Address is required').not().isEmpty(),
     check('dob', 'Date of birth is required').not().isEmpty(),
-    check('cnic', 'CNIC is required').isLength(13),
     check('password', 'Password is required').isLength(8)
 ], registerAdmin);
 
@@ -38,7 +37,6 @@ router.post('/update-admin', [
     check('contact', 'Enter a valid contact number').isLength(11),
     check('address', 'Address is required').not().isEmpty(),
     check('dob', 'Date of birth is required').not().isEmpty(),
-    check('cnic', 'CNIC is required').isLength(13),
     check('hostel', 'Hostel is required').not().isEmpty(),
     check('password', 'Password is required').isLength(8)
 ], updateAdmin);

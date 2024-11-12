@@ -70,7 +70,7 @@ const registerAdmin = async (req, res) => {
             return res.status(400).json({success, errors: errors.array()});
         }
 
-        const {name, email, father_name, contact, address, dob, cnic, hostel, password} = req.body;
+        const {name, email, father_name, contact, address, dob, hostel, password} = req.body;
 
         try {
             let admin = await Admin.findOne({email});
@@ -78,8 +78,10 @@ const registerAdmin = async (req, res) => {
             if (admin) {
                 return res.status(400).json({success, errors: [{msg: 'Admin already exists'}]});
             }
+            console.log(hostel)
 
-            let shostel = await Hostel.findOne({_id: hostel});
+            let shostel = await Hostel.find().where({_id : hostel});
+            console.log(shostel)
 
             if (!shostel) {
                 return res.status(400).json({success, errors: [{msg: 'Hostel not found'}]});
@@ -103,7 +105,6 @@ const registerAdmin = async (req, res) => {
                 contact,
                 address,
                 dob,
-                cnic,
                 user: user.id,
                 hostel: shostel.id
             });
