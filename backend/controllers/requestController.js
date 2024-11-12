@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator');
 const Request = require('../models/Request');
+const socket = require('../utils/socket');
 
 const register = async (req, res) => {
     const errors = validationResult(req);
@@ -16,6 +17,12 @@ const register = async (req, res) => {
             student_id, name, batch, dept, course, email, contact, dob, father_name, father_contact, address, password
         });
         await newRequest.save();
+        // Emit the new request using the socket utility
+        socket.emit('newRequest', {
+            message: 'New registration request received',
+            request: newRequest
+        });
+        
         res.json(newRequest);
     } catch(err) {
         console.error(err.message);
