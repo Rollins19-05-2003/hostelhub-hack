@@ -1,71 +1,317 @@
 import { Input } from "./Input";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { Button } from "./../../Dashboards/Common/PrimaryButton";
+import { Loader } from "./../../Dashboards/Common/Loader";
+import { ToastContainer, toast } from 'react-toastify';
 
-export default function RequestAcc() {
-  const register = (event) => {
-    event.preventDefault();
-    let data = {
-      cms_id: inputCms,
-    };
+export default function RequestRegistration() {
+  const hostel = JSON.parse(localStorage.getItem("hostel")).name;
+  const [studentId, setStudentId] = useState("");
+  const [name, setName] = useState("");
+  const [batch, setBatch] = useState("");
+  const [dept, setDept] = useState("");
+  const [course, setCourse] = useState("");
+  const [email, setEmail] = useState("");
+  const [fatherName, setFatherName] = useState("");
+  const [fatherContact, setFatherContact] = useState("");
+  const [contact, setContact] = useState("");
+  const [address, setAddress] = useState("");
+  const [dob, setDob] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+ 
 
-    fetch("http://localhost:3000/api/request/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data)
-    }).then((response) => {
-      if (response.status === 200) {
-        alert("Request sent successfully");
+  const registerStudent = async (e) => {
+
+    e.preventDefault();
+    setLoading(true);
+    
+      let student = {
+        name: name,
+        student_id: studentId,
+        dob: dob,
+        email: email,
+        contact: contact,
+        father_name: fatherName,
+        father_contact: fatherContact,
+        address: address,
+        course: course,
+        dept: dept,
+        batch: batch,
+        password: password,
+      };
+      try {
+  
+      const res = await fetch("http://localhost:3000/api/request/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(student)
+      });
+  
+      const data = await res.json();
+      console.log(data);
+      if (data.student_id) {
+        toast.success(`Student ${data.student.name} Registered Successfully!`, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+  
+        // Reset form fields
+        
+        setName("");
+        setStudentId("");
+        setBatch("");
+        setDept("");
+        setCourse("");
+        setEmail("");
+        setFatherName("");
+        setFatherContact("");
+        setContact("");
+        setAddress("");
+        setDob("");
+        setPassword("");
       } else {
-        response.json().then((data) => {
-          alert(data.errors[0].msg);
-        }
-        );
+        data.errors.forEach((err) => {
+          toast.error(err.msg, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+          });
+        });
       }
     }
-    );
+     catch (err) {
+      toast.error("An error occurred during registration. Please try again.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
-  const [inputCms, setInputCms] = useState('');
-  const changeCms = (event) => {
-    setInputCms(event.target.value);
-  }
-
-
-  const cms = {
-    name: "cms",
-    type: "number",
-    placeholder: "000000",
-    req: true,
-    onChange: changeCms,
-  }
 
   return (
-    <div className="w-full rounded-lg md:mt-0 sm:max-w-md xl:p-0 bg-gray-800 border-gray-700">
-      <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-        <h1 className="text-xl font-bold leading-tight tracking-tight md:text-2xl text-white">
-          Request account from Hostel Manager
-        </h1>
-        <form className="space-y-4 md:space-y-6" onSubmit={register}>
-          <Input field={cms} />
-          <button
-            type="submit"
-            className="w-full text-white hover:bg-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 focus:ring-blue-800"
-          >
-            Request
-          </button>
-          <p className="text-sm font-light text-gray-400">
-            Already have an account?{" "}
-            <Link
-              to="/auth"
-              className="font-medium hover:underline text-blue-500"
+    <div className="w-full max-h-screen pt-20 flex flex-col items-center justify-center">
+      <h1 className="text-white font-bold text-5xl mt-10 mb-5">
+         Request Form
+      </h1>
+      <div className="md:w-[60vw] w-full p-10 bg-neutral-950 rounded-lg shadow-xl mb-10 overflow-auto">
+        <form method="post" onSubmit={registerStudent} className="flex flex-col gap-3">
+          <div className="flex gap-5 flex-wrap justify-center md:w-full sw-[100vw]">
+            <Input
+              field={{
+                name: "name",
+                placeholder: "Student Name",
+                type: "text",
+                req: true,
+                value: name,
+                onChange: (e) => setName(e.target.value),
+              }}
+            />
+            <Input
+              field={{
+                name: "student_id",
+                placeholder: "Student id",
+                type: "number",
+                req: true,
+                value: studentId,
+                onChange: (e) => setStudentId(e.target.value),
+              }}
+            />
+            <Input
+              field={{
+                name: "dob",
+                placeholder: "Student dob",
+                type: "date",
+                req: true,
+                value: dob,
+                onChange: (e) => setDob(e.target.value),
+              }}
+            />
+           
+            
+          </div>
+          <div className="flex gap-5 w-full flex-wrap justify-center">
+            <Input
+              field={{
+                name: "email",
+                placeholder: "Student Email",
+                type: "email",
+                req: true,
+                value: email,
+                onChange: (e) => setEmail(e.target.value),
+              }}
+            />
+            <Input
+              field={{
+                name: "contact",
+                placeholder: "Student Contact",
+                type: "text",
+                req: true,
+                value: contact,
+                onChange: (e) => setContact(e.target.value),
+              }}
+            />
+            <Input
+              field={{
+                name: "father_name",
+                placeholder: "Student's Father Name",
+                type: "text",
+                req: true,
+                value: fatherName,
+                onChange: (e) => setFatherName(e.target.value),
+              }}
+            />
+             <Input
+              field={{
+                name: "father_contact",
+                placeholder: "Student's Father contact",
+                type: "text",
+                req: true,
+                value: fatherContact,
+                onChange: (e) => setFatherContact(e.target.value),
+              }}
+            />
+          </div>
+          <div className="mx-12">
+            <label
+              htmlFor="address"
+              className="block mb-2 text-sm font-medium text-white"
             >
-              Sign In
-            </Link>
-          </p>
+              Address
+            </label>
+            <textarea
+              name="address"
+              placeholder="Student Address"
+              required
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              className="border flex-grow sm:text-sm rounded-lg block w-full p-2.5 bg-neutral-700 border-neutral-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 outline-none"
+            />
+          </div>
+ 
+          <div className="flex flex-wrap justify-center gap-5">
+            <Input
+              field={{
+                name: "course",
+                placeholder: "Student Course",
+                type: "text",
+                req: true,
+                value: course,
+                onChange: (e) => setCourse(e.target.value),
+              }}
+            />
+
+<Input
+              field={{
+                name: "dept",
+                placeholder: "Department name",
+                type: "text",
+                req: true,
+                value: dept,
+                onChange: (e) => setDept(e.target.value),
+              }}
+            />
+
+
+            <Input
+              field={{
+                name: "batch",
+                placeholder: "Student Batch",
+                type: "number",
+                req: true,
+                value: batch,
+                onChange: (e) => setBatch(e.target.value),
+              }}
+            />
+          </div>
+          
+          <div className="mx-12">
+            <Input
+              field={{
+                name: "password",
+                placeholder: "Student Password",
+                type: "password",
+                req: true,
+                value: password,
+                onChange: (e) => setPassword(e.target.value),
+              }}
+            />
+          </div>
+          <div className="mt-5">
+            <Button>
+              {loading ? (
+                <>
+                  <Loader /> Registering...
+                </>
+              ) : (
+                <span>Register Student</span>
+              )}
+            </Button>
+          </div>
         </form>
       </div>
     </div>
   );
 }
+
+// export function RequestAcc() {
+//   const register = (event) => {
+//     event.preventDefault();
+//     let data = {
+//       cms_id: inputCms,
+//     };
+
+//     fetch("http://localhost:3000/api/request/register", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(data)
+//     }).then((response) => {
+//       if (response.status === 200) {
+//         alert("Request sent successfully");
+//       } else {
+//         response.json().then((data) => {
+//           alert(data.errors[0].msg);
+//         }
+//         );
+//       }
+//     }
+//     );
+//   };
+//   const [inputCms, setInputCms] = useState('');
+//   const changeCms = (event) => {
+//     setInputCms(event.target.value);
+//   }
+
+
+//   const cms = {
+//     name: "cms",
+//     type: "number",
+//     placeholder: "000000",
+//     req: true,
+//     onChange: changeCms,
+//   }
+
+//   return (
+//     <div>
+//       <RegisterStudent/>
+//     </div>
+//   );
+// }
+
