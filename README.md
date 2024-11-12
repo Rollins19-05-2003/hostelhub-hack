@@ -49,11 +49,11 @@ npm run dev
 
 ## Login Details
 - AdminLogin
-    - muhammaddanish14@gmail.com
-    - Password: 123456789
+    - sdeb19@gmail.com
+    - Password: admin@123
 - Login
-    - ahad@gmail.com
-    - Password: 12345678
+    - sourav.cse2021@ritroorkee.com
+    - Password: Sourav@0123
 
 ## Add .env file in backend folder with following content
 ```
