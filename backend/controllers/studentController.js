@@ -13,9 +13,9 @@ const registerStudent = async (req, res) => {
         return res.status(400).json({success, errors: errors.array() });
     }
 
-    const { name, cms_id, room_no, batch, dept, course, email, father_name, contact, address, dob, cnic, hostel, password } = req.body;
+    const { name, student_id, room_no, batch, dept, course, email, father_name, father_contact, contact, address, dob, hostel, password } = req.body;
     try {
-        let student = await Student.findOne({ cms_id });
+        let student = await Student.findOne({ student_id });
 
         if (student) {
             return res.status(400).json({success, errors: [{ msg: 'Student already exists' }] });
@@ -35,17 +35,17 @@ const registerStudent = async (req, res) => {
         
         student = new Student({
             name,
-            cms_id,
+            student_id,
             room_no,
             batch,
             dept,
             course,
             email,
             father_name,
+            father_contact,
             contact,
             address,
             dob,
-            cnic,
             user: user.id,
             hostel: shostel.id
         });

@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import { useQuery } from "@tanstack/react-query";
 
 Topbar.propTypes = {
   name: PropTypes.string,
   notifications: PropTypes.array,
 };
 
-function Topbar({ name, notifications }) {
+function Topbar({ name }) {
   const navigate = useNavigate();
   let logout = () => {
     localStorage.removeItem("admin");
@@ -19,6 +20,16 @@ function Topbar({ name, notifications }) {
 
   const [date, setDate] = useState(new Date());
 
+  const fetchNotifications = async () => {
+    const response = await fetch(`http://localhost:3000/api/admin/get-notifications`);
+    return response.json();
+  };
+
+  const { data: notificationsData, isLoading, isError } = useQuery({
+    queryKey: ["notifications"],
+    queryFn: () => fetchNotifications(),
+  });
+
   function refreshClock() {
     setDate(new Date());
   }
@@ -29,11 +40,16 @@ function Topbar({ name, notifications }) {
     };
   }, []);
 
+  const goToRegistration = (noti) => {
+    localStorage.setItem("newStudentData" , JSON.stringify(noti));
+    navigate("/admin-dashboard/register-student/" + noti.student_id);
+  }
+
   return (
     <div className="py-5 px-5 flex items-center justify-between text-white w-full bg-stone-950 shadow-lg absolute top-0 md:w-[calc(100%-256px)] md:ml-[256px]">
       <span className="hidden md:block">
         {date.toLocaleTimeString()}
-      </span>    
+      </span>
       <span>{name}</span>
       <div className="flex gap-3">
         <Link to="settings">
@@ -73,13 +89,16 @@ function Topbar({ name, notifications }) {
             />
           </svg>
           <div className="absolute bg-neutral-800 -bottom-15 right-2 p-5 w-96 hidden group-hover:flex flex-col rounded-xl">
-            <ul className="[&>*:nth-child(1)]:border-t-0">
-              {notifications.map((noti) => (
+            {isLoading ? <span>Loading...</span> : <ul className="[&>*:nth-child(1)]:border-t-0">
+              {notificationsData?.notifications?.map((noti) => (
                 <li
-                  key={noti}
+                  onClick={() => goToRegistration(noti)}
+                  key={noti._id}
                   className="py-5 px-5 flex justify-between items-center text-md border-t-[1px] border-neutral-500 transition-all hover:bg-neutral-900 hover:rounded-xl hover:scale-105 hover:shadow-xl hover:border-transparent"
                 >
-                  New account request from {noti}
+                  <p className="text-sm font-semibold truncate">
+                    New account request from {noti?.name}
+                  </p>
                   <span className="group/edit relative flex">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -101,7 +120,7 @@ function Topbar({ name, notifications }) {
                   </span>
                 </li>
               ))}
-            </ul>
+            </ul>}
           </div>
         </div>
 

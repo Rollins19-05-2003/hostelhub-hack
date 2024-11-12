@@ -53,6 +53,7 @@ function App() {
         </Route>
         <Route path="/admin-dashboard" element={<AdminIndex />}>
           <Route index element={<AdminHome />} />
+          <Route path='register-student/:id' element={<RegisterStudent />} />
           <Route path='register-student' element={<RegisterStudent />} />
           <Route path="attendance" element={<AdminAttendance />} />
           <Route path="complaints" element={<AdminComplaints />} />

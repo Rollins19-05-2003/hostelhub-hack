@@ -1,6 +1,6 @@
 const express = require('express');
 const { check } = require('express-validator');
-const { registerAdmin, updateAdmin, getAdmin, getHostel, deleteAdmin, registerHostel } = require('../controllers/adminController');
+const { registerAdmin, updateAdmin, getAdmin, getHostel, deleteAdmin, registerHostel, getNotifications, approveRequest, rejectRequest } = require('../controllers/adminController');
 const router = express.Router();
 
 // @route  POST api/admin/register-admin
@@ -62,5 +62,20 @@ router.post('/get-hostel', [
 router.post('/delete-admin', [
     check('email', 'Please include a valid email').isEmail()
 ], deleteAdmin);
+
+// @route  POST api/admin/get-notifications
+// @desc   Get notifications
+// @access Public
+router.get('/get-notifications', getNotifications);
+
+// @route  POST api/admin/approve-request/:id
+// @desc   Approve request
+// @access Public
+router.patch('/approve-request/:id', approveRequest);
+
+// @route  POST api/admin/reject-request/:id
+// @desc   Reject request
+// @access Public
+router.patch('/reject-request/:id', rejectRequest);  
 
 module.exports = router;

@@ -179,19 +179,19 @@ export default function Index() {
 
   const admin = JSON.parse(localStorage.getItem("admin"));
 
-  const [notifications, setNotifications] = useState([
-    368115, 347403, 377902, 369420,
-  ]);
+  // const [notifications, setNotifications] = useState([
+  //   368115, 347403, 377902, 369420,
+  // ]);
 
-  useEffect(() => {
-    //! FETCH FROM DATABASE DANISH
-    setNotifications([368115, 347403, 377902, 369420]);
-  }, []);
+  // useEffect(() => {
+  //   //! FETCH FROM DATABASE DANISH
+  //   setNotifications([368115, 347403, 377902, 369420]);
+  // }, []);
 
   return (
     <div className="flex">
       <Sidebar links={links} />
-      <Topbar name={admin.name} notifications={notifications} />
+      <Topbar name={admin.name} />
       <div className="w-full bg-stone-900 h-screen">
         <Outlet />
       </div>

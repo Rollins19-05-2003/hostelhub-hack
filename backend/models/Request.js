@@ -48,6 +48,15 @@ const RequestSchema = new Schema({
         type:Date,
         required:true
     },
+    password:{
+        type:String,
+        required:true
+    },
+    status:{
+        type:String,
+        enum: ['pending', 'approved', 'rejected'],
+        default: 'pending'
+    },
     user:{
         type:Schema.Types.ObjectId,
         ref:'user'

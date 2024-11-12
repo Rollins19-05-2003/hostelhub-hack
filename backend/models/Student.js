@@ -6,7 +6,7 @@ const StudentSchema = new Schema({
         type:String,
         required:true
     },
-    cms_id:{
+    student_id:{
         type:Number,
         required:true,
         unique:true
@@ -36,6 +36,10 @@ const StudentSchema = new Schema({
         type:String,
         required:true
     },
+    father_contact:{
+        type:String,
+        required:true
+    },
     contact:{
         type:String,
         required:true
@@ -47,11 +51,6 @@ const StudentSchema = new Schema({
     dob:{
         type:Date,
         required:true
-    },
-    cnic:{
-        type:String,
-        required:true,
-        unique:true
     },
     user:{
         type:Schema.Types.ObjectId,

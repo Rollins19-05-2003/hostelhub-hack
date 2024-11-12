@@ -1,28 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "./Input";
 import { Button } from "../Common/PrimaryButton";
 import { Loader } from "../Common/Loader";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useParams } from "react-router-dom";
 
 function RegisterStudent() {
+  const { id } = useParams();
   const registerStudent = async (e) => {
+    if (name === "" || dob === "" || email === "" || contact === "" || fatherName === "" || fatherContact === "" || address === "" || room_no === "" || batch === "" || dept === "" || course === "" || password === "") {
+      toast.error("Please fill all the fields");
+      return;
+    }
     e.preventDefault();
     try {
       setLoading(true);
       let student = {
         name: name,
-        cms_id: cms,
+        student_id: student_id,
         room_no: room_no,
         batch: batch,
         dept: dept,
         course: course,
         email: email,
         father_name: fatherName,
+        father_contact: fatherContact,
         contact: contact,
         address: address,
         dob: dob,
-        cnic: cnic,
         hostel: hostel,
         password: password
       };
@@ -47,7 +53,7 @@ function RegisterStudent() {
           progress: undefined,
           theme: "dark",
         })
-        setCms("");
+        setStudentId("");
         setName("");
         setRoomNo("");
         setBatch("");
@@ -58,16 +64,23 @@ function RegisterStudent() {
         setContact("");
         setAddress("");
         setDob("");
-        setCnic("");
+        setFatherContact("");
         setPassword("");
         setLoading(false);
+        await fetch("http://localhost:3000/api/student/update-student/" + newStudentData._id, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          }
+        })
+        localStorage.removeItem("newStudentData");
       } else {
         // console.log(cms);
         data.errors.forEach((err) => {
           toast.error(
             err.msg, {
             position: "top-right",
-            autoClose: 3000,
+            autoClose: 6000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -91,8 +104,8 @@ function RegisterStudent() {
   };
 
   const hostel = JSON.parse(localStorage.getItem("hostel")).name;
-  const [cms, setCms] = useState();
   const [name, setName] = useState();
+  const [student_id, setStudentId] = useState();
   const [room_no, setRoomNo] = useState();
   const [batch, setBatch] = useState();
   const [dept, setDept] = useState();
@@ -102,10 +115,53 @@ function RegisterStudent() {
   const [contact, setContact] = useState();
   const [address, setAddress] = useState();
   const [dob, setDob] = useState();
-  const [cnic, setCnic] = useState();
   const [password, setPassword] = useState();
+  const [fatherContact, setFatherContact] = useState();
 
   const [loading, setLoading] = useState(false);
+  const [newStudentData, setNewStudentData] = useState(JSON.parse(localStorage.getItem("newStudentData")));
+  useEffect(() => {
+    setNewStudentData(JSON.parse(localStorage.getItem("newStudentData")));
+  }, [localStorage.getItem("newStudentData")]);
+ 
+  useEffect(() => {
+    if(!id) {clearForm(); return;}
+    if(newStudentData?.student_id != id) {clearForm(); return;}
+    if (newStudentData) {
+      setName(newStudentData.name || "");
+      setDob(newStudentData.dob || "");
+      setEmail(newStudentData.email || "");
+      setContact(newStudentData.contact || "");
+      setFatherName(newStudentData.father_name || "");
+      setFatherContact(newStudentData.father_contact || "");
+      setAddress(newStudentData.address || "");
+      setBatch(newStudentData.batch || "");
+      setDept(newStudentData.dept || "");
+      setCourse(newStudentData.course || "");
+      setPassword(newStudentData.password || "");
+    }
+  }, [newStudentData?.student_id]);
+
+  const clearForm = () => {
+    setName("");
+    setStudentId("");
+    setRoomNo("");
+    setBatch("");
+    setDept("");
+    setCourse("");
+    setEmail("");
+    setFatherName("");
+    setFatherContact("");
+    setAddress("");
+    setDob("");
+    setPassword("");
+  }
+
+  useEffect(() => {
+    if(!id) {clearForm(); return;}
+    if(newStudentData?.student_id != id) {clearForm(); return;}
+    setStudentId(id);
+  }, [id, newStudentData?.student_id]);
 
   return (
     <div className="w-full max-h-screen pt-20 flex flex-col items-center justify-center">
@@ -127,34 +183,15 @@ function RegisterStudent() {
             />
             <Input
               field={{
-                name: "cms",
-                placeholder: "Student CMS",
+                name: "student_id",
+                placeholder: "Student ID",
                 type: "number",
                 req: true,
-                value: cms,
-                onChange: (e) => setCms(e.target.value),
+                value: student_id,
+                onChange: (e) => setStudentId(e.target.value),
               }}
             />
-            <Input
-              field={{
-                name: "dob",
-                placeholder: "Student dob",
-                type: "date",
-                req: true,
-                value: dob,
-                onChange: (e) => setDob(e.target.value),
-              }}
-            />
-            <Input
-              field={{
-                name: "cnic",
-                placeholder: "Student CNIC",
-                type: "text",
-                req: true,
-                value: cnic,
-                onChange: (e) => setCnic(e.target.value),
-              }}
-            />
+            <input type="date" name="dob" id="dob" value={dob} onChange={(e) => setDob(e.target.value)} className="border sm:text-sm rounded-lg block w-full p-2.5 bg-neutral-700 border-neutral-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="Student DOB" required />
           </div>
           <div className="flex gap-5 w-full flex-wrap justify-center">
             <Input
@@ -185,6 +222,16 @@ function RegisterStudent() {
                 req: true,
                 value: fatherName,
                 onChange: (e) => setFatherName(e.target.value),
+              }}
+            />
+            <Input
+              field={{
+                name: "father_contact",
+                placeholder: "Father Contact",
+                type: "text",
+                req: true,
+                value: fatherContact,
+                onChange: (e) => setFatherContact(e.target.value),
               }}
             />
           </div>

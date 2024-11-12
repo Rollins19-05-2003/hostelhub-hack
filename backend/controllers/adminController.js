@@ -1,7 +1,8 @@
 const {generateToken, verifyToken} = require('../utils/auth');
 const {validationResult} = require('express-validator');
-const {Admin, User, Hostel} = require('../models');
+const {Admin, User, Hostel, Request} = require('../models');
 const bcrypt = require('bcryptjs');
+
 
 // const registerAdmin = async (req, res) => {
 //     try {
@@ -285,11 +286,41 @@ const deleteAdmin = async (req, res) => {
     }
 }
 
+const getNotifications = async (req, res) => {
+    try {
+        let notifications = await Request.find({status: 'pending'});
+        res.json({success: true, notifications: notifications});
+    } catch (error) {
+        res.status(500).send('Server error');
+    }
+}
+
+const approveRequest = async (req, res) => {
+    try {
+        let request = await Request.findByIdAndUpdate(req.params.id, {status: 'approved'});
+        res.json({success: true, request: request});
+    } catch (error) {
+        res.status(500).send('Server error');
+    }
+}
+
+const rejectRequest = async (req, res) => {
+    try {
+        let request = await Request.findByIdAndUpdate(req.params.id, {status: 'rejected'});
+        res.json({success: true, request: request});
+    } catch (error) {
+        res.status(500).send('Server error');
+    }
+}
+
 module.exports = {
     registerAdmin,
     registerHostel,
     updateAdmin,
     getAdmin,
     getHostel,
-    deleteAdmin
+    deleteAdmin,
+    getNotifications,
+    approveRequest,
+    rejectRequest
 }
