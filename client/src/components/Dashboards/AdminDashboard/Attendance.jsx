@@ -102,7 +102,7 @@ function Attendance() {
     year: "numeric",
   });
 
-  const labels = ["Present", "Absentees", "Unmarked Students"];
+  const labels = ["Present", "Absent", "Unmarked"];
   const graph = (
     <div className="flex flex-row-reverse items-center gap-3 h-64">
       <Doughnut
@@ -114,8 +114,8 @@ function Attendance() {
               label: "No. of Students",
               data: [
                 present,
-                markedStudents.length - present,
-                unmarkedStudents.length,
+                markedStudents.filter(student => student.attendance === false).length,
+                unmarkedStudents.length
               ],
               backgroundColor: ["#1D4ED8", "#F26916", "#808080"],
               barThickness: 20,

@@ -313,6 +313,33 @@ const rejectRequest = async (req, res) => {
     }
 }
 
+const getLeaveRequests = async (req, res) => {
+    try {
+        const leaveRequests = await LeaveReq.find({});
+        res.json({success: true, leaveRequests});
+    } catch (error) {
+        res.status(500).send('Server error');
+    }
+}
+
+const approveLeaveRequest = async (req, res) => {
+    try {
+        const leaveRequest = await LeaveReq.findByIdAndUpdate(req.params.id, {status: 'approved'});
+        res.json({success: true, leaveRequest});
+    } catch (error) {
+        res.status(500).send('Server error');
+    }
+}
+
+const rejectLeaveRequest = async (req, res) => {
+    try {
+        const leaveRequest = await LeaveReq.findByIdAndUpdate(req.params.id, {status: 'rejected'});
+        res.json({success: true, leaveRequest});
+    } catch (error) {
+        res.status(500).send('Server error');
+    }
+}
+
 module.exports = {
     registerAdmin,
     registerHostel,
@@ -322,5 +349,8 @@ module.exports = {
     deleteAdmin,
     getNotifications,
     approveRequest,
-    rejectRequest
+    rejectRequest,
+    getLeaveRequests,
+    approveLeaveRequest,
+    rejectLeaveRequest
 }

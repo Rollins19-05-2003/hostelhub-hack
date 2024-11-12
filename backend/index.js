@@ -31,3 +31,6 @@ const io = socket.init(server);
 // io.on('connection', (socket) => {
 //   socket.on('disconnect', () => {});
 // });
+
+const attendanceAutomation = require('./services/attendanceAutomation');
+attendanceAutomation.start();
