@@ -1,15 +1,15 @@
-const express = require('express')
-const connectDB = require('./utils/conn')
-const cors = require('cors')
+const express = require('express');
+const connectDB = require('./utils/conn');
+const cors = require('cors');
+const { Server } = require('socket.io');
 
-const app = express()
-const port = 3000
+const app = express();
+const port = 3000;
 
 connectDB();
 
 app.use(cors());
-
-app.use(express.json({ extended: false }));
+app.use(express.json());
 
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/student', require('./routes/studentRoutes'));
@@ -21,9 +21,26 @@ app.use('/api/request', require('./routes/requestRoutes'));
 app.use('/api/attendance', require('./routes/attendanceRoutes'));
 app.use('/api/suggestion', require('./routes/suggestionRoutes'));
 
-app.get('/', (req,res)=>{
-  res.send("hello")
-})
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+const server = app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"]
+  }
+});
+
+io.on('connection', (socket) => {
+  console.log('A user connected:', socket.id);
+
+  socket.on('message', (data) => {
+    console.log('Message received:', data);
+    io.emit('message', data);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id);
+  });
+});
