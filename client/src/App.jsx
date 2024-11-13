@@ -38,6 +38,7 @@ import WardInvoices from "./components/Dashboards/ParentDashboard/WardInvoices";
 import LeaveRequest from "./../src/components/Dashboards/StudentDashboard/Leave";
 import AdminLeaveRequests from "./../src/components/Dashboards/AdminDashboard/LeaveOff";
 import Maintenance from "./components/Dashboards/StudentDashboard/Maintenance";
+import MaintenanceReq from "./components/Dashboards/AdminDashboard/MaintenanceReq";
 function App() {
   return (
     <>
@@ -84,6 +85,7 @@ function App() {
           <Route path="settings" element={<AdminSettings />} />
           <Route path="all-students" element={<AllStudents />} />
           <Route path="mess-off" element={<AdminMess />} />
+          <Route path="maintenance" element = {<MaintenanceReq />} />
           {/* New Leave Management Routes for Admin */}
           <Route path="leave-requests" element={<AdminLeaveRequests />} />
           {/* <Route path="leave/history" element={<AdminLeaveHistory />} /> */}
