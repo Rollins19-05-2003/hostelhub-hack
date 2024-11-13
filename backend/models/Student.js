@@ -13,7 +13,6 @@ const StudentSchema = new Schema({
     },
     room_no:{
         type:Number,
-        required:true
     },
     batch:{
         type:Number,

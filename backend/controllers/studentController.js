@@ -24,11 +24,12 @@ const registerStudent = async (req, res) => {
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-
+        
         let user = new User({
             email,
             password: hashedPassword,
-            isAdmin: false
+            isAdmin: false,
+            isParent: false
         });
 
         await user.save();
@@ -56,6 +57,8 @@ const registerStudent = async (req, res) => {
         success = true;
         res.json({success, student });
     } catch (err) {
+        console.log(err)
+        console.log(err)
         res.status(500).json({success, errors: 'Server error'});
     }
 }
