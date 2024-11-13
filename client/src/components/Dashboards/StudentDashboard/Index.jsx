@@ -134,6 +134,15 @@ export default function Index() {
       ),
     },
     {
+      text: "Maintenance",
+      url: "/student-dashboard/maintenance",
+      svg: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12 5.373-12 12-12zm0 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" />
+        </svg>
+      ),
+    },
+    {
       text: "Suggestions",
       url: "/student-dashboard/suggestions",
       for: dashboard,
@@ -155,10 +164,10 @@ export default function Index() {
       ),
     },
     {
-      text : "Get Roommate",
-      url : "/student-dashboard/roommate",
+      text: "Get Roommate",
+      url: "/student-dashboard/roommate",
       svg: (
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
           <path d="M16 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM6 12c2.21 0 4-1.79 4-4S8.21 4 6 4 2 5.79 2 8s1.79 4 4 4zm10 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zM6 14c-2.67 0-8 1.34-8 4v2h8v-2c0-2.66 5.33-4 8-4h-8z" />
         </svg>
 

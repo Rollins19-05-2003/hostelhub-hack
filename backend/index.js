@@ -24,6 +24,7 @@ app.use('/api/attendance', require('./routes/attendanceRoutes'));
 app.use('/api/suggestion', require('./routes/suggestionRoutes'));
 app.use('/api/parent', require('./routes/parentRoutes'));
 app.use('/student', studentRoutes);
+app.use('/api/maintenance', require('./routes/maintenanceRoutes'));
 
 
 const server = app.listen(port, () => {

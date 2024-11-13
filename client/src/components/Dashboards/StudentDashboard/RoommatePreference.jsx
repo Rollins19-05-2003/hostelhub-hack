@@ -47,7 +47,7 @@ function RoommatePreference() {
       <h1 className="text-white font-bold text-5xl mt-10 mb-5">
         Recommended Roommates
       </h1>
-      <div className="md:w-[80vw] w-full p-10 bg-neutral-950 rounded-xl shadow-xl mb-10">
+      <div className="md:w-[80vw] w-full p-10 bg-neutral-950 rounded-xl shadow-xl mb-10 overflow-y-auto">
         {recommendations.length === 0 ? (
           <div className="text-white text-center">
             No matching roommates found at the moment.
