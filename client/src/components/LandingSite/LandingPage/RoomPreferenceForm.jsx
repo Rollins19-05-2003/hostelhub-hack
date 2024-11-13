@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "./../AuthPage/Input";
 import { Button } from "./../../Dashboards/Common/PrimaryButton";
 import { Loader } from "./../../Dashboards/Common/Loader";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function RoomPreferenceForm() {
+function RoomPreferenceForm({ onSubmitSuccess }) {
   const [studentId, setStudentId] = useState("");
   const [roomType, setRoomType] = useState("Single");
   const [nonVeg, setNonVeg] = useState(false);
@@ -13,34 +13,64 @@ function RoomPreferenceForm() {
   const [state, setState] = useState("");
   const [hobbies, setHobbies] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+
+  useEffect(() => {
+    // Get current user's student ID from localStorage
+    const student = JSON.parse(localStorage.getItem("student"));
+    if (student?.student_id) {
+      setStudentId(student.student_id);
+      fetchExistingPreference(student.student_id);
+    }
+  }, []);
+
+  const fetchExistingPreference = async (sid) => {
+    try {
+      const res = await fetch(`http://localhost:3000/student/getRoomPref/${sid}`);
+      if (res.ok) {
+        const data = await res.json();
+        // Populate form with existing data
+        setRoomType(data.roomType || "Single");
+        setNonVeg(data.nonVeg || false);
+        setBranch(data.branch || "");
+        setState(data.state || "");
+        setHobbies(data.hobbies || []);
+        setIsEdit(true);
+      }
+    } catch (error) {
+      console.error("Error fetching preference:", error);
+    }
+  };
 
   const submitPreference = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
       const roomPref = { studentId, roomType, nonVeg, state, hobbies, branch };
+      
       const res = await fetch("http://localhost:3000/student/createRoomPref", {
-        method: "POST",
+        method: "POST", // The backend will handle both create and update
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(roomPref),
       });
+      
       const data = await res.json();
 
       if (res.ok) {
-        toast.success("Room preference submitted successfully!", { theme: "dark" });
-        setStudentId("");
-        setRoomType("Single");
-        setNonVeg(false);
-        setHobbies([]);
-        setBranch("");
-        setState("");
+        toast.success(
+          isEdit 
+            ? "Room preference updated successfully!" 
+            : "Room preference submitted successfully!", 
+          { theme: "dark" }
+        );
+        
+        if (onSubmitSuccess) onSubmitSuccess();
       } else {
         toast.error(data.message || "Failed to submit room preference", { theme: "dark" });
       }
     } catch (error) {
       toast.error("Error submitting room preference", { theme: "dark" });
-      console.log(error)
-      res.send(error)
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -49,7 +79,7 @@ function RoomPreferenceForm() {
   return (
     <div className="w-full max-h-screen pt-20 flex flex-col items-center justify-center">
       <h1 className="text-white font-bold text-5xl mt-10 mb-5">
-        Room Preference Form
+        {isEdit ? "Update Room Preference" : "Room Preference Form"}
       </h1>
       <div className="md:w-[60vw] w-full p-10 bg-neutral-950 rounded-xl shadow-xl mb-10 overflow-auto">
         <form
@@ -57,16 +87,23 @@ function RoomPreferenceForm() {
           onSubmit={submitPreference}
           className="flex flex-col gap-3"
         >
-          <Input
-            field={{
-              name: "studentId",
-              placeholder: "Student ID",
-              type: "number",
-              req: true,
-              value: studentId,
-              onChange: (e) => setStudentId(e.target.value),
-            }}
-          />
+          {/* Student ID field - readonly if editing */}
+          <div className="flex flex-col">
+            <label className="text-white text-sm font-semibold mb-2">
+              Student ID
+            </label>
+            <input
+              type="number"
+              value={studentId}
+              onChange={(e) => setStudentId(e.target.value)}
+              readOnly={isEdit}
+              className={`bg-neutral-800 text-white p-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${
+                isEdit ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
+              required
+            />
+          </div>
+
           <div className="flex gap-5 flex-wrap">
             <div className="flex flex-col w-full md:w-1/2">
               <label className="text-white text-sm font-semibold mb-2">
@@ -163,10 +200,10 @@ function RoomPreferenceForm() {
             <Button>
               {loading ? (
                 <>
-                  <Loader /> Submitting...
+                  <Loader /> {isEdit ? "Updating..." : "Submitting..."}
                 </>
               ) : (
-                <span>Submit Preferences</span>
+                <span>{isEdit ? "Update Preferences" : "Submit Preferences"}</span>
               )}
             </Button>
             <ToastContainer

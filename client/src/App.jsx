@@ -26,6 +26,7 @@ import AdminSuggestions from './components/Dashboards/AdminDashboard/Suggestions
 import AdminSettings from './components/Dashboards/AdminDashboard/Settings'
 import AllStudents from "./components/Dashboards/AdminDashboard/AllStudents";
 import AdminMess from "./components/Dashboards/AdminDashboard/MessOff";
+import RoommatePreference from "./components/Dashboards/StudentDashboard/RoommatePreference";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
           <Route path="complaints" element={<Complaints/>} />
           <Route path="suggestions" element={<Suggestions/>} />
           <Route path="invoices" element={<Invoices/>} />
+          <Route path="roommate" element={<RoommatePreference/>} />
           <Route path="settings" element={<Settings/>} />
         </Route>
         <Route path="/admin-dashboard" element={<AdminIndex />}>
