@@ -2,6 +2,7 @@ const express = require('express');
 const connectDB = require('./utils/conn');
 const cors = require('cors');
 const socket = require('./utils/socket');
+const studentRoutes = require('./routes/student');
 
 const app = express();
 const port = 3000;
@@ -21,6 +22,7 @@ app.use('/api/request', require('./routes/requestRoutes'));
 app.use('/api/attendance', require('./routes/attendanceRoutes'));
 app.use('/api/suggestion', require('./routes/suggestionRoutes'));
 app.use('/api/parent', require('./routes/parentRoutes'));
+app.use('/student', studentRoutes);
 
 const server = app.listen(port, () => {
   console.log(`Server running on port ${port}`);
