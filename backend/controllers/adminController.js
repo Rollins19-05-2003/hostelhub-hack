@@ -1,6 +1,6 @@
 const {generateToken, verifyToken} = require('../utils/auth');
 const {validationResult} = require('express-validator');
-const {Admin, User, Hostel, Request} = require('../models');
+const {Admin, User, Hostel, Request, ParentRequest} = require('../models');
 const bcrypt = require('bcryptjs');
 
 
@@ -288,7 +288,9 @@ const deleteAdmin = async (req, res) => {
 
 const getNotifications = async (req, res) => {
     try {
-        let notifications = await Request.find({status: 'pending'});
+        const studentRequests = await Request.find({status: 'pending'});
+        const parentRequests = await ParentRequest.find({status: 'pending'});
+        let notifications = {student : studentRequests, parent : parentRequests};
         res.json({success: true, notifications: notifications});
     } catch (error) {
         res.status(500).send('Server error');

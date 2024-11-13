@@ -40,8 +40,7 @@ function RegisterStudent() {
         body: JSON.stringify(student),
       })
       const data = await res.json();
-
-      if (data.success) {
+      if (data.success) { 
         toast.success(
           'Student ' + data.student.name + ' Registered Successfully!', {
           position: "top-right",
@@ -129,7 +128,8 @@ function RegisterStudent() {
     if(newStudentData?.student_id != id) {clearForm(); return;}
     if (newStudentData) {
       setName(newStudentData.name || "");
-      setDob(newStudentData.dob || "");
+      const date = new Date(newStudentData.dob);
+      setDob(date.toISOString().split('T')[0]);
       setEmail(newStudentData.email || "");
       setContact(newStudentData.contact || "");
       setFatherName(newStudentData.father_name || "");

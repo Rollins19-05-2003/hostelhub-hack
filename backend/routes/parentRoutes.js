@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { check } = require('express-validator');
-const { registerParentRequest, approveParentRequest, getParentChildren } = require('../controllers/parentController');
+const { registerParentRequest, approveParentRequest, getParent, getParentChildren } = require('../controllers/parentController');
 
 router.post('/register-request', [
     check('name', 'Name is required').not().isEmpty(),
@@ -15,6 +15,11 @@ router.post('/register-request', [
 router.post('/approve-request', [
     check('requestId', 'Request ID is required').not().isEmpty()
 ], approveParentRequest);
+
+router.post('/get-parent', [
+    check('isAdmin', 'isAdmin is required').not().isEmpty(),
+    check('token', 'Token is required').not().isEmpty()
+], getParent);
 
 router.post('/get-children', [
     check('parentId', 'Parent ID is required').not().isEmpty()

@@ -29,7 +29,7 @@ const register = async (req, res) => {
             request: newRequest
         });
         
-        res.json(newRequest);
+        res.json({ success: true, request: newRequest });
     } catch(err) {
         console.error(err.message);
         res.status(500).send('Server error');

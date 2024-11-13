@@ -1,12 +1,14 @@
-import { Input } from "./Input";
-import { Link } from "react-router-dom";
 import { useState } from "react";
-import { Button } from "./../../Dashboards/Common/PrimaryButton";
+import { toast } from 'react-toastify';
+import ParentRegister from "../../Auth/ParentRegister";
 import { Loader } from "./../../Dashboards/Common/Loader";
-import { ToastContainer, toast } from 'react-toastify';
+import { Button } from "./../../Dashboards/Common/PrimaryButton";
+import { Input } from "./Input";
 
 export default function RequestRegistration() {
-  const hostel = JSON.parse(localStorage.getItem("hostel")).name;
+
+  const [activeTab, setActiveTab] = useState("student");
+
   const [studentId, setStudentId] = useState("");
   const [name, setName] = useState("");
   const [batch, setBatch] = useState("");
@@ -20,10 +22,9 @@ export default function RequestRegistration() {
   const [dob, setDob] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
- 
 
   const registerStudent = async (e) => {
-
+    
     e.preventDefault();
     setLoading(true);
     
@@ -52,9 +53,9 @@ export default function RequestRegistration() {
       });
   
       const data = await res.json();
-      console.log(data);
-      if (data.student_id) {
-        toast.success(`Student ${data.student.name} Registered Successfully!`, {
+      console.log(data?.errors);
+      if (data.success) {
+        toast.success(`Student ${data.request.name} Registered Successfully!`, {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -81,6 +82,7 @@ export default function RequestRegistration() {
         setPassword("");
       } else {
         data.errors.forEach((err) => {
+          console.log(err.msg);
           toast.error(err.msg, {
             position: "top-right",
             autoClose: 3000,
@@ -106,11 +108,34 @@ export default function RequestRegistration() {
 
   return (
     <div className="w-full max-h-screen pt-20 flex flex-col items-center justify-center">
+      <div className="flex space-x-4 mb-8">
+        <button
+          className={`px-6 py-2 rounded-lg font-semibold transition-colors ${
+            activeTab === "student"
+              ? "bg-blue-600 text-white"
+              : "bg-neutral-800 text-gray-300 hover:bg-neutral-700"
+          }`}
+          onClick={() => setActiveTab("student")}
+        >
+          Register as Student
+        </button>
+        <button
+          className={`px-6 py-2 rounded-lg font-semibold transition-colors ${
+            activeTab === "parent"
+              ? "bg-blue-600 text-white"
+              : "bg-neutral-800 text-gray-300 hover:bg-neutral-700"
+          }`}
+          onClick={() => setActiveTab("parent")}
+        >
+          Register as Parent
+        </button>
+      </div>
+
       <h1 className="text-white font-bold text-5xl mt-10 mb-5">
-         Request Form
+        {activeTab === "student" ? "Student Registration" : "Parent Registration"}
       </h1>
       <div className="md:w-[60vw] w-full p-10 bg-neutral-950 rounded-lg shadow-xl mb-10 overflow-auto">
-        <form method="post" onSubmit={registerStudent} className="flex flex-col gap-3">
+        { activeTab === "student" && <form method="post" onSubmit={registerStudent} className="flex flex-col gap-3">
           <div className="flex gap-5 flex-wrap justify-center md:w-full sw-[100vw]">
             <Input
               field={{
@@ -263,7 +288,10 @@ export default function RequestRegistration() {
               )}
             </Button>
           </div>
-        </form>
+        </form> }
+        {
+          activeTab === "parent" && <ParentRegister/>
+        }
       </div>
     </div>
   );

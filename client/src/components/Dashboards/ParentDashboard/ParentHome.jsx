@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
+import { useChildren } from './ChildrenContext';
 
-function Attendance() {
+const Attendance = ({student}) => {
+    console.log("Student");
   const [totalDays, setTotalDays] = useState(0);
-  const [loading, setLoading] = useState(false);
-  console.log(loading);
   const getAttendance = async () => {
-      setLoading(true);
-      let student = JSON.parse(localStorage.getItem("student"));
       const res = await fetch("http://localhost:3000/api/attendance/get", {
         method: "POST",
         headers:{
@@ -16,8 +14,6 @@ function Attendance() {
         body: JSON.stringify({student:student._id}),
       });
       const data = await res.json();
-      setLoading(false);
-      console.log(data);
       if(data.success){
         let daysOff = 0;
         let unmarked = 0;
@@ -55,7 +51,7 @@ function Attendance() {
   }, [ daysOff.length, thisWeek.length ]);
   return (
     <div className="w-full h-screen flex flex-col gap-5 items-center justify-center max-h-screen overflow-y-auto pt-20 md:pt-0 ">
-      <h1 className="text-white font-bold text-5xl">Attendance</h1>
+      <h1 className="text-white font-bold text-2xl">{student.name}'s Attendance</h1>
       <ul className="flex gap-5 text-white text-xl px-5 sm:p-0 text-center">
         <li>Total Days: {totalDays}</li>
         <li>Present Days: {totalDays - daysOff - unmarked}</li>
@@ -152,4 +148,22 @@ function Attendance() {
   );
 }
 
-export default Attendance;
+function ParentHome() {
+  const { childrenList } = useChildren();
+  const parent = JSON.parse(localStorage.getItem("parent"));
+
+  return (
+    <div className="w-full h-screen flex items-center justify-center flex-col gap-5 max-h-screen overflow-y-auto pt-64 lg:pt-0 md:pt-64 sm:pt-96">
+      <h1 className="text-white font-bold text-5xl text-center">
+        Welcome <span className="text-blue-500">{parent.name}!</span>
+      </h1>
+      <div className="flex gap-5 w-full justify-center flex-wrap">
+        {childrenList.map((child) => (
+            <Attendance student={child} />
+        ))}
+      </div>
+    </div>
+  );
+}
+export { ParentHome }
+export default ParentHome;

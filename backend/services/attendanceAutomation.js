@@ -3,14 +3,15 @@ const { Student, Attendance } = require('../models');
 
 class AttendanceAutomation {
     constructor() {
-        this.morningTime = '48 1 * * *';  // 01:00 AM
-        this.eveningTime = '23 1 * * *'; // 05:00 PM
+        this.morningTime = '00 00 * * *';  // 11:27 PM
+        this.eveningTime = '00 10 * * *'; // 10:00 PM
         this.morningJob = null;
         this.eveningJob = null;
     }
 
     async createUnmarkedAttendance() {
         try {
+            console.log('Creating unmarked attendance records...');
             const students = await Student.find({});
             const today = new Date();
             today.setHours(0, 0, 0, 0);

@@ -9,6 +9,9 @@ const Suggestion = require('./Suggestion');
 const Invoice = require('./Invoice');
 const Request = require('./Request');
 const LeaveReq = require('./LeaveReq');
+const Parent = require('./Parent');
+const ParentRequest = require('./ParentRequest');
+
 module.exports = {
     Admin,
     Hostel,
@@ -20,5 +23,7 @@ module.exports = {
     Suggestion,
     Invoice,
     Request,
-    LeaveReq
+    LeaveReq,
+    Parent,
+    ParentRequest
 }

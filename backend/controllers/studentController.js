@@ -1,6 +1,6 @@
 const { generateToken, verifyToken } = require('../utils/auth');
 const { validationResult } = require('express-validator');
-const { Student, Hostel, User, LeaveReq } = require('../models');
+const { Student, Hostel, User, LeaveReq, Attendance } = require('../models');
 const bcrypt = require('bcryptjs');
 const Parser = require('json2csv').Parser;
 
@@ -53,6 +53,12 @@ const registerStudent = async (req, res) => {
         
 
         await student.save();
+        await Request.findOneAndUpdate({student_id: student_id}, {status: 'approved'});
+        const attendance = new Attendance({
+            student: student.id,
+            status: 'unmarked'
+        });
+        await attendance.save();
 
         success = true;
         res.json({success, student });

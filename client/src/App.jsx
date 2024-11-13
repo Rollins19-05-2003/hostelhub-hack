@@ -27,6 +27,14 @@ import AdminSettings from './components/Dashboards/AdminDashboard/Settings'
 import AllStudents from "./components/Dashboards/AdminDashboard/AllStudents";
 import AdminMess from "./components/Dashboards/AdminDashboard/MessOff";
 import RoommatePreference from "./components/Dashboards/StudentDashboard/RoommatePreference";
+import RegisterParent from "./components/Dashboards/AdminDashboard/RegisterParent";
+import ParentSignin from "./components/LandingSite/AuthPage/ParentSignin";
+import ParentIndex from "./components/Dashboards/ParentDashboard/ParentIndex";
+import ParentHome from "./components/Dashboards/ParentDashboard/ParentHome";
+// import WardAttendance from "./components/Dashboards/ParentDashboard/WardAttendance";
+// import WardInvoices from "./components/Dashboards/ParentDashboard/WardInvoices";
+import { ChildrenProvider } from './components/Dashboards/ParentDashboard/ChildrenContext';
+import WardInvoices from "./components/Dashboards/ParentDashboard/WardInvoices";
 
 function App() {
   return (
@@ -41,6 +49,7 @@ function App() {
             <Route path="login" element={<SignIn />} />
             <Route path="request" element={<RequestRegistration />} />
             <Route path="admin-login" element={<AdminSignIn />} />
+            <Route path="parent-login" element={<ParentSignin />} />
           </Route>
         </Route>
         <Route path="/student-dashboard" element={<Index />}>
@@ -57,6 +66,8 @@ function App() {
           <Route index element={<AdminHome />} />
           <Route path='register-student/:id' element={<RegisterStudent />} />
           <Route path='register-student' element={<RegisterStudent />} />
+          <Route path='register-parent/:id' element={<RegisterParent />} />
+          <Route path='register-parent' element={<RegisterParent />} />
           <Route path="attendance" element={<AdminAttendance />} />
           <Route path="complaints" element={<AdminComplaints />} />
           <Route path="invoices" element={<AdminInvoices/>} />
@@ -64,6 +75,14 @@ function App() {
           <Route path="settings" element={<AdminSettings/>} />
           <Route path="all-students" element={<AllStudents/>}/>
           <Route path="mess" element={<AdminMess />} />
+        </Route>
+        <Route path="/parent-dashboard" element={
+          <ChildrenProvider>
+            <ParentIndex />
+          </ChildrenProvider>
+        }>
+          <Route index element={<ParentHome />} />
+          <Route path="ward-invoices" element={<WardInvoices />} />
         </Route>
       </Routes>
     </>
