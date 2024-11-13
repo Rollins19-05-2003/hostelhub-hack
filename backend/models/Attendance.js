@@ -3,17 +3,19 @@ const Schema = mongoose.Schema;
 
 const AttendanceSchema = new Schema({
     student:{
-        type:Schema.Types.ObjectId,
-        ref:'student'
+        type: Schema.Types.ObjectId,
+        ref: 'student'
     },
     date:{
-        type:Date,
-        default:Date.now
+        type: Date,
+        default: Date.now
     },
     status:{
-        type:String,
-        required:true
+        type: String,
+        enum: ['present', 'absent', 'unmarked'],
+        default: 'unmarked',
+        required: true
     }
-})
+});
 
-module.exports = Attendance = mongoose.model('attendance',AttendanceSchema);
+module.exports = Attendance = mongoose.model('attendance', AttendanceSchema);

@@ -9,8 +9,8 @@ import { useParams } from "react-router-dom";
 function RegisterStudent() {
   const { id } = useParams();
   const registerStudent = async (e) => {
-    if (name === "" || dob === "" || email === "" || contact === "" || fatherName === "" || fatherContact === "" || address === "" || room_no === "" || batch === "" || dept === "" || course === "" || password === "") {
-      toast.error("Please fill all the fields");
+    if (name === "" || dob === "" || email === "" || contact === "" || fatherName === "" || fatherContact === "" || address === "" || batch === "" || dept === "" || course === "" || password === "") {
+      toast.error("Please fill all the required fields");
       return;
     }
     e.preventDefault();
@@ -257,7 +257,6 @@ function RegisterStudent() {
                 name: "room",
                 placeholder: "Student Room",
                 type: "number",
-                req: true,
                 value: room_no,
                 onChange: (e) => setRoomNo(e.target.value),
               }}

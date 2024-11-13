@@ -21,6 +21,7 @@ app.use('/api/messoff', require('./routes/messoffRoutes'));
 app.use('/api/request', require('./routes/requestRoutes'));
 app.use('/api/attendance', require('./routes/attendanceRoutes'));
 app.use('/api/suggestion', require('./routes/suggestionRoutes'));
+app.use('/api/parent', require('./routes/parentRoutes'));
 app.use('/student', studentRoutes);
 
 const server = app.listen(port, () => {
@@ -33,3 +34,6 @@ const io = socket.init(server);
 // io.on('connection', (socket) => {
 //   socket.on('disconnect', () => {});
 // });
+
+const attendanceAutomation = require('./services/attendanceAutomation');
+attendanceAutomation.start();

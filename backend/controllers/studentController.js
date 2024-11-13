@@ -1,6 +1,6 @@
 const { generateToken, verifyToken } = require('../utils/auth');
 const { validationResult } = require('express-validator');
-const { Student, Hostel, User } = require('../models');
+const { Student, Hostel, User, LeaveReq } = require('../models');
 const bcrypt = require('bcryptjs');
 const Parser = require('json2csv').Parser;
 
@@ -24,11 +24,12 @@ const registerStudent = async (req, res) => {
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-
+        
         let user = new User({
             email,
             password: hashedPassword,
-            isAdmin: false
+            isAdmin: false,
+            isParent: false
         });
 
         await user.save();
@@ -56,6 +57,8 @@ const registerStudent = async (req, res) => {
         success = true;
         res.json({success, student });
     } catch (err) {
+        console.log(err)
+        console.log(err)
         res.status(500).json({success, errors: 'Server error'});
     }
 }
@@ -211,6 +214,30 @@ const csvStudent = async (req, res) => {
 
         success = true;
         res.json({success, csv});
+    } catch (err) {
+        res.status(500).json({success, errors: [{msg: 'Server error'}]});
+    }
+}
+
+const createLeaveRequest = async (req, res) => {
+    let success = false;
+    try {
+        const { student_id, name, batch, dept, course, reason, start_date, end_date } = req.body;
+        const leaveRequest = new LeaveReq({student_id, name, batch, dept, course, reason, start_date, end_date});
+        await leaveRequest.save();
+        success = true;
+        res.json({success, leaveRequest});
+    } catch (err) {
+        res.status(500).json({success, errors: [{msg: 'Server error'}]});
+    }
+}
+
+const getLeaveRequests = async (req, res) => {
+    let success = false;
+    try {
+        const leaveRequests = await LeaveReq.find({student_id: req?.body?.student_id});
+        success = true;
+        res.json({success, leaveRequests});
     } catch (err) {
         res.status(500).json({success, errors: [{msg: 'Server error'}]});
     }

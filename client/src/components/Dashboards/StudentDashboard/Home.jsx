@@ -119,6 +119,10 @@ const List = () => {
 function Home() {
   let student = JSON.parse(localStorage.getItem("student"));
 
+  const [daysOff, setDaysOff] = useState(0);
+  const [daysPresent, setDaysPresent] = useState(0);
+  const [daysUnmarked, setDaysUnmarked] = useState(0);
+
   const getAttendance = async () => {
     let student = JSON.parse(localStorage.getItem("student"));
     const res = await fetch("http://localhost:3000/api/attendance/get", {
@@ -130,15 +134,27 @@ function Home() {
     });
     const data = await res.json();
     if (data.success) {
-      let daysOff = 0;
-      data.attendance.map((day) => {
-        if (day.status === "absent") {
-          daysOff++;
+      let absent = 0;
+      let present = 0;
+      let unmarked = 0;
+      
+      data.attendance.forEach((day) => {
+        switch(day.status.toLowerCase()) {
+          case "absent":
+            absent++;
+            break;
+          case "present":
+            present++;
+            break;
+          case "unmarked":
+            unmarked++;
+            break;
         }
       });
-      setDaysOff(daysOff);
-    } else {
-      // console.log("Error");
+      
+      setDaysOff(absent);
+      setDaysPresent(present);
+      setDaysUnmarked(unmarked);
     }
   };
 
@@ -146,10 +162,9 @@ function Home() {
     getAttendance();
   }, []);
 
-  const labels = ["Days off", "Days present"];
+  const labels = ["Days Absent", "Days Present", "Days Unmarked"];
   let totalDays = new Date();
   totalDays = totalDays.getDate();
-  const [daysOff, setDaysOff] = useState(0); //!Fetch from database
 
   return (
     <div className="w-full h-screen flex items-center justify-center flex-col gap-5 max-h-screen overflow-y-auto pt-64 lg:pt-0 md:pt-64 sm:pt-96">
@@ -160,22 +175,38 @@ function Home() {
         <List />
         <div className="flex flex-col items-center bg-neutral-950 rounded-xl shadow-xl p-5">
           <span className="text-white text-xl">Attendance</span>
-          <Doughnut
-            datasetIdKey="id"
-            data={{
-              labels,
-              datasets: [
-                {
-                  label: "days",
-                  data: [daysOff, totalDays - daysOff],
-                  backgroundColor: ["#F26916", "#1D4ED8"],
-                  barThickness: 50,
-                  borderColor: "rgba(0,0,0,0)",
-                  hoverOffset: 10,
-                },
-              ],
-            }}
-          />
+          <div className="flex flex-col items-center">
+            <Doughnut
+              datasetIdKey="id"
+              data={{
+                labels,
+                datasets: [
+                  {
+                    label: "days",
+                    data: [daysOff, daysPresent, daysUnmarked],
+                    backgroundColor: ["#F26916", "#1D4ED8", "#808080"],
+                    barThickness: 50,
+                    borderColor: "rgba(0,0,0,0)",
+                    hoverOffset: 10,
+                  },
+                ],
+              }}
+            />
+            <div className="mt-4 text-white text-sm">
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-3 h-3 bg-[#F26916] rounded-full"></div>
+                <span>Absent: {daysOff} days</span>
+              </div>
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-3 h-3 bg-[#1D4ED8] rounded-full"></div>
+                <span>Present: {daysPresent} days</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-[#808080] rounded-full"></div>
+                <span>Unmarked: {daysUnmarked} days</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
