@@ -1,6 +1,6 @@
 const express = require('express');
 const { check } = require('express-validator');
-const { registerAdmin, updateAdmin, getAdmin, getHostel, deleteAdmin, registerHostel, getNotifications, approveRequest, rejectRequest } = require('../controllers/adminController');
+const { registerAdmin, updateAdmin, updateStudent,getAdmin, getHostel, deleteAdmin, registerHostel, getNotifications, approveRequest, rejectRequest } = require('../controllers/adminController');
 const router = express.Router();
 
 // @route  POST api/admin/register-admin
@@ -40,6 +40,25 @@ router.post('/update-admin', [
     check('hostel', 'Hostel is required').not().isEmpty(),
     check('password', 'Password is required').isLength(8)
 ], updateAdmin);
+
+// @route  POST api/admin/update-admin
+// @desc   Update admin
+// @access Public
+// router.post('/update-studentDetails', [
+//     check('name', 'Name is required').not().isEmpty(),
+//     check('student_id', 'Student ID of at least 6 digit is required').isLength(6),
+//     check('batch', 'Batch is required').not().isEmpty(),
+//     check('dept', 'Department is required').not().isEmpty(),
+//     check('course', 'Course is required').not().isEmpty(),
+//     check('email', 'Please include a valid email').isEmail(),
+//     check('father_name', 'Father name is required').not().isEmpty(),
+//     check('contact', 'Enter a valid contact number').isLength(10),
+//     check('address', 'Address is required').not().isEmpty(),
+//     check('dob', 'Date of birth is required').not().isEmpty(),
+//     check('father_contact', 'Enter valid phone number').isLength(10),
+//     check('hostel', 'Hostel is required').not().isEmpty(),
+//     check('password', 'Please enter a password with 8 or more characters').isLength({ min: 8 }),
+// ], updateStudent);
 
 // @route  POST api/admin/get-admin
 // @desc   Get admin by email

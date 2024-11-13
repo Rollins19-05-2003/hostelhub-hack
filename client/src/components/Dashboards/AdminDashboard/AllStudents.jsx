@@ -2,8 +2,12 @@ import { useState, useEffect } from "react";
 import { getAllStudents } from "../../../utils";
 import { ToastContainer ,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import RegisterStudent from "./RegisterStudent";
+import {useNavigate} from "react-router-dom"
+// import { Student } from "../../../../../backend/models";
 
 function AllStudents() {
+  const navigate = useNavigate();
   const getCSV = async () => {
     const hostel = JSON.parse(localStorage.getItem('hostel'))._id;
     const res = await fetch("http://localhost:3000/api/student/csv", {
@@ -79,6 +83,10 @@ function AllStudents() {
     }
   };
 
+  // const editStudentDetails = (student) => {
+  //   localStorage.setItem("studentDetails", JSON.stringify(student));
+  //   navigate("/api/admin/update-studentDetails");
+  // };  
 
   useEffect(() => {
     getAll();
@@ -137,11 +145,11 @@ function AllStudents() {
                     {student.name}
                   </p>
                   <p className="text-sm truncate text-gray-400">
-                    {student.cms_id} | Room: {student.room_no}
+                    {student.cms_id} | Room: {student.room_no ? student.room_no : "Not Assigned"}
                   </p>
                 </div>
                 <div className="flex gap-3">
-                  <button className="hover:underline hover:text-green-600 hover:scale-125 transition-all">
+                  <button className="hover:underline hover:text-green-600 hover:scale-125 transition-all" >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"

@@ -9,7 +9,6 @@ const LeaveForm = require('./LeaveForm');
 const Suggestion = require('./Suggestion');
 const Invoice = require('./Invoice');
 const Request = require('./Request');
-const LeaveReq = require('./LeaveReq');
 const Parent = require('./Parent');
 const ParentRequest = require('./ParentRequest');
 
@@ -25,7 +24,6 @@ module.exports = {
     Suggestion,
     Invoice,
     Request,
-    LeaveReq,
     Parent,
     ParentRequest
 }

@@ -151,7 +151,7 @@ const reject = (id) => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium truncate text-white">
-                      {req.student.name} [Room: {req.student.room_no}]
+                      {req.student.name} [Room: {req.student.room_no ? req.student.room_no : "Not Assigned"}]
                     </p>
                     <p className="text-sm truncate text-gray-400">
                       from: {req.from} to: {req.to}

@@ -86,7 +86,7 @@ function App() {
           <Route path="all-students" element={<AllStudents />} />
           <Route path="mess-off" element={<AdminMess />} />
           {/* New Leave Management Routes for Admin */}
-          <Route path="leave/requests" element={<AdminLeaveRequests />} />
+          <Route path="leave-requests" element={<AdminLeaveRequests />} />
           {/* <Route path="leave/history" element={<AdminLeaveHistory />} /> */}
         </Route>
         <Route path="/parent-dashboard" element={

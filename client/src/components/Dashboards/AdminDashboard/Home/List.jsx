@@ -39,12 +39,19 @@ function List({ list, title, icon, addClasses }) {
             ))
           )}
         </ul>
-        <Link className="py-3 text-lg text-center rounded-lg w-full text-white border-blue-600 border-2 hover:bg-blue-600 transition-all" to={title}>
+        <Link className="py-3 text-lg text-center rounded-lg w-full text-white border-blue-600 border-2 hover:bg-blue-600 transition-all" to={formatLink(title)}>
           Manage {title}
         </Link>
       </div>
     </div>
   );
 }
+
+const formatLink = (title) => {
+  if(title == "mess"){
+    return "mess-off"
+  }
+  return title.toLowerCase().replace(" ", "-");
+};
 
 export { List };

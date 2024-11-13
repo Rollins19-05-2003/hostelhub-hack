@@ -262,7 +262,7 @@ function Home() {
         <List list={messReqs} title="mess" icon={messIcon} />
         {graph}
         <List list={suggestions} title="suggestions" icon={suggestionIcon} />
-        <List list={leaveReqs} title="Leave Request" icon={messIcon} />
+        <List list={leaveReqs} title="Leave Requests" icon={messIcon} />
       </div>
     </div>
   );
