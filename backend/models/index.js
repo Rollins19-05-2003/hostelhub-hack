@@ -5,6 +5,7 @@ const User = require('./User');
 const Attendance = require('./Attendance');
 const Complaint = require('./Complaint');
 const MessOff = require('./MessOff');
+const LeaveForm = require('./LeaveForm');
 const Suggestion = require('./Suggestion');
 const Invoice = require('./Invoice');
 const Request = require('./Request');
@@ -20,6 +21,7 @@ module.exports = {
     Attendance,
     Complaint,
     MessOff,
+    LeaveForm,
     Suggestion,
     Invoice,
     Request,

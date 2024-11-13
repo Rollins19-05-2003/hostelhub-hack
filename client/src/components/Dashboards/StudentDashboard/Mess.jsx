@@ -93,7 +93,7 @@ function Mess() {
     let student = JSON.parse(localStorage.getItem("student"));
     setLoading(true);
     if (student) {
-      fetch("http://localhost:3000/api/Messoff/count", {
+      fetch("http://localhost:3000/api/messoff/count", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

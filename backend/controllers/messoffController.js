@@ -75,6 +75,7 @@ exports.listMessOff = async (req, res) => {
         return res.status(400).json({errors: errors.array(), success});
     }
     const { hostel } = req.body;
+    
     try {
         const students = await Student.find({ hostel }).select('_id');
         const list = await MessOff.find({ student: { $in: students } , status: "pending" }).populate('student', ['name', 'room_no']);

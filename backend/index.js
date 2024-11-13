@@ -18,11 +18,13 @@ app.use('/api/admin', require('./routes/adminRoutes'));
 app.use('/api/complaint', require('./routes/complaintRoutes'));
 app.use('/api/invoice', require('./routes/invoiceRoutes'));
 app.use('/api/messoff', require('./routes/messoffRoutes'));
+app.use('/api/leaveoff', require('./routes/leaveformRoutes'));
 app.use('/api/request', require('./routes/requestRoutes'));
 app.use('/api/attendance', require('./routes/attendanceRoutes'));
 app.use('/api/suggestion', require('./routes/suggestionRoutes'));
 app.use('/api/parent', require('./routes/parentRoutes'));
 app.use('/student', studentRoutes);
+
 
 const server = app.listen(port, () => {
   console.log(`Server running on port ${port}`);

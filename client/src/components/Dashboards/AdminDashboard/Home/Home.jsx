@@ -105,6 +105,32 @@ function Home() {
     }
   };
 
+  const getLeaveRequests = async () => {
+    const hostel = JSON.parse(localStorage.getItem("hostel"));
+    const res = await fetch("http://localhost:3000/api/leaveoff/list", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ hostel: hostel._id }),
+    });
+    const data = await res.json();
+    if (data.success) {
+      data.list.map((req) => {
+        req.id = req._id;
+        req.from = new Date(req.leaving_date).toDateString().slice(4, 10);
+        req.to = new Date(req.return_date).toDateString().slice(4, 10);
+        req._id = req.student._id;
+        req.student.name = req.student.name;
+        req.student.room_no = req.student.room_no;
+        req.status = req.status;
+        (req.title = `${req.student.name} [ Room: ${req.student.room_no}]`),
+          (req.desc = `${req.from} to ${req.to}`);
+      });
+      setLeaveReqs(data.list);
+    }
+  };
+
   function transformApiData(apiData) {
     // Extract complaints from the API data
     const complaintss = apiData || [];
@@ -139,12 +165,14 @@ function Home() {
 
   useEffect(() => {
     getRequests();
+    getLeaveRequests();
     getStudentCount();
     getComplaints();
     getSuggestions();
   }, []);
 
   const [messReqs, setMessReqs] = useState([]);
+  const [leaveReqs, setLeaveReqs] = useState([]);
 
   const messIcon = (
     <svg
@@ -234,6 +262,7 @@ function Home() {
         <List list={messReqs} title="mess" icon={messIcon} />
         {graph}
         <List list={suggestions} title="suggestions" icon={suggestionIcon} />
+        <List list={leaveReqs} title="Leave Request" icon={messIcon} />
       </div>
     </div>
   );
