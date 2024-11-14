@@ -82,10 +82,10 @@ function AllStudents() {
     }
   };
 
-  // const editStudentDetails = (student) => {
-  //   localStorage.setItem("studentDetails", JSON.stringify(student));
-  //   navigate("/api/admin/update-studentDetails");
-  // };  
+  const editStudentData = (student) => {
+    localStorage.setItem("newStudentData" , JSON.stringify(student));
+    navigate("/admin-dashboard/register-student/" + student.student_id);
+  }
 
   useEffect(() => {
     getAll();
@@ -148,7 +148,7 @@ function AllStudents() {
                   </p>
                 </div>
                 <div className="flex gap-3">
-                  <button className="hover:underline hover:text-green-600 hover:scale-125 transition-all" onClick={() => editStudentDetails(student)}>
+                  <button className="hover:underline hover:text-green-600 hover:scale-125 transition-all" onClick={() => editStudentData(student)}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"

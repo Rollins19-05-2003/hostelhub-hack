@@ -18,7 +18,10 @@ const registerStudent = async (req, res) => {
         let student = await Student.findOne({ student_id });
 
         if (student) {
-            return res.status(400).json({success, errors: [{ msg: 'Student already exists' }] });
+            //update
+            await Student.updateOne({student_id}, {name, room_no, batch, dept, course, email, father_name, father_contact, contact, address, dob});
+            success = true;
+            return res.status(200).json({success, msg: 'Student updated successfully' });
         }
         let shostel = await Hostel.findOne({ name: hostel });
 
