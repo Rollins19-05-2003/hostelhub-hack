@@ -11,6 +11,7 @@ const Invoice = require('./Invoice');
 const Request = require('./Request');
 const Parent = require('./Parent');
 const ParentRequest = require('./ParentRequest');
+const AbsentNotification = require('./AbsentNotification');
 
 module.exports = {
     Admin,
@@ -25,5 +26,6 @@ module.exports = {
     Invoice,
     Request,
     Parent,
-    ParentRequest
+    ParentRequest,
+    AbsentNotification
 }

@@ -59,6 +59,11 @@ function Leave() {
   const [requests, setRequests] = useState(0);
   const [loading, setLoading] = useState(false);
   const [requestsList, setRequestsList] = useState([]);
+  const [requestStats, setRequestStats] = useState({
+    pending: 0,
+    approved: 0,
+    rejected: 0
+  });
 
   function handleLeaveChange(e) {
     setLeaveDate(e.target.value);
@@ -97,10 +102,21 @@ function Leave() {
       })
         .then((res) => res.json())
         .then((result) => {
-          console.log(result)
           if (result.success) {
             setRequests(result.list.length);
             setRequestsList(result.list);
+            
+            const stats = {
+              pending: 0,
+              approved: 0,
+              rejected: 0
+            };
+            
+            result.list.forEach(req => {
+              stats[req.status.toLowerCase()]++;
+            });
+            
+            setRequestStats(stats);
           } else {
             alert(result.errors[0].msg);
           }
@@ -138,16 +154,26 @@ function Leave() {
         <div className="h-[30vh] gap-2 flex items-center justify-center flex-wrap">
           <Doughnut
             data={{
-              labels: ["Requested Leave"],
+              labels: ["Pending", "Approved", "Rejected"],
               datasets: [
                 {
-                  label: "Leave",
-                  data: [requests],
-                  backgroundColor: ["#EAB308"],
+                  label: "Leave Requests",
+                  data: [requestStats.pending, requestStats.approved, requestStats.rejected],
+                  backgroundColor: ["#EAB308", "#22C55E", "#EF4444"],
                 },
               ],
             }}
-            options={{ plugins: { legend: { display: false } } }}
+            options={{ 
+              plugins: { 
+                legend: { 
+                  display: true,
+                  position: 'bottom',
+                  labels: {
+                    color: 'white'
+                  }
+                } 
+              } 
+            }}
           />
         </div>
         <div className="w-full sm:w-80 max-w-md max-h-60 p-4 border rounded-lg shadow sm:p-8 bg-neutral-950 border-neutral-900 drop-shadow-xl overflow-y-auto">

@@ -1,10 +1,10 @@
 const cron = require('node-cron');
-const { Student, Attendance } = require('../models');
+const { Student, Attendance, LeaveForm,  AbsentNotification} = require('../models');
 
 class AttendanceAutomation {
     constructor() {
         this.morningTime = '00 00 * * *';  // 11:27 PM
-        this.eveningTime = '00 10 * * *'; // 10:00 PM
+        this.eveningTime = '50 9 * * *'; // 10:00 PM
         this.morningJob = null;
         this.eveningJob = null;
     }
@@ -51,16 +51,26 @@ class AttendanceAutomation {
                 status: { $in: ['unmarked', 'absent'] }
             }).populate('student', 'name student_id room_no');
 
-            console.log('Students with unmarked/absent attendance:');
-            unmarkedAttendance.forEach(async (record) => {
-                //check if leave request is approved for the day
-                const leaveRequest = await LeaveReq.findOne({student_id: record.student.student_id, status: 'approved', start_date: {$lte: record.date}, end_date: {$gte: record.date}});
-                if(leaveRequest){
-                    console.log(`${record.student.name} (${record.student.student_id}) - Room: ${record.student.room_no} - Status: ${record.status} - Leave Request: ${leaveRequest.status}`);
-                }else{
-                    console.log(`${record.student.name} (${record.student.student_id}) - Room: ${record.student.room_no} - Status: ${record.status}`);
+            console.log('Checking students with unmarked/absent attendance...');
+            
+            for (const record of unmarkedAttendance) {
+                const LeaveFormuest = await LeaveForm.findOne({
+                    student: record.student._id,
+                    status: 'approved',
+                    leaving_date: { $lte: record.date },
+                    return_date: { $gte: record.date }
+                });
+
+                if (!LeaveFormuest && record.status === 'absent') {
+                    // Create notification for unauthorized absence
+                    const notification = new AbsentNotification({
+                        student: record.student._id,
+                        message: `${record.student.name} (Room: ${record.student.room_no}) was absent without approved leave on ${today.toDateString()}`
+                    });
+                    await notification.save();
+                    console.log(`Created absence notification for student: ${record.student.name}`);
                 }
-            });
+            }
         } catch (error) {
             console.error('Error checking unmarked attendance:', error);
         }

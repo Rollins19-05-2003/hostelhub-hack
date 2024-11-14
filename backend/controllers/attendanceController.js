@@ -27,9 +27,7 @@ const getAttendance = async (req, res) => {
     }
     const { student } = req.body;
     try {
-        console.log("student", student);
         const attendance = await Attendance.find({ student });
-        console.log("attendance", attendance);
         success = true;
         res.status(200).json({ success, attendance });
     }

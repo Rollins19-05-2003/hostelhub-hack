@@ -18,22 +18,33 @@ function Topbar({ name }) {
 
   const fetchNotifications = async () => {
     let response;
+    let parent = localStorage.getItem("parent");
+    if(parent) {
+      parent = JSON.parse(parent);
+    }
+
     //if current user is admin
     if (localStorage.getItem("admin")) {
       response = await fetch(`http://localhost:3000/api/admin/get-notifications`);
       const data = await response.json();
       return data;
+    } else if (parent) {
+      response = await fetch(`http://localhost:3000/api/notification/get-notifications-by-student-id`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({studentIds: parent.children})
+      });
+      const data = await response.json();
+      console.log(data, "data")
+      return data;
     }
-    return [];
-    // else if (localStorage.getItem("parent")) {
-    //   response = await fetch(`http://localhost:3000/api/parent/get-notifications`);
-    //   const data = await response.json();
-    //   return data;
-    // }
+    
   };
 
   const { data: notificationsData, isLoading, refetch } = useQuery({
-    queryKey: ["notifications"],
+    queryKey: ["notifications", localStorage.getItem("parent"), localStorage.getItem("admin")],
     queryFn: () => fetchNotifications(),
   });
 
@@ -58,6 +69,7 @@ function Topbar({ name }) {
     localStorage.removeItem("admin");
     localStorage.removeItem("hostel");
     localStorage.removeItem("student");
+    localStorage.removeItem("parent");
     localStorage.removeItem("token");
     navigate("/");
   };
@@ -118,7 +130,7 @@ function Topbar({ name }) {
         </Link>
         <div className="relative group cursor-pointer">
           {<span className="text-xs flex justify-center items-center absolute -right-1 -top-1 text-center rounded-full w-4 h-4 bg-white text-black group-hover:text-white group-hover:bg-blue-500">
-            {(notificationsData?.notifications?.student?.length + notificationsData?.notifications?.parent?.length) || '0'}
+            {localStorage.getItem("parent") ? (notificationsData?.notifications?.length) : (notificationsData?.notifications?.student?.length + notificationsData?.notifications?.parent?.length) || '0'}
           </span>}
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -134,7 +146,7 @@ function Topbar({ name }) {
               d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
             />
           </svg>
-          {notificationsData?.notifications?.student?.length + notificationsData?.notifications?.parent?.length > 0 && <div className="absolute bg-neutral-800 -bottom-15 right-2 p-5 w-96 hidden group-hover:flex flex-col rounded-xl">
+          {localStorage.getItem("admin") && notificationsData?.notifications?.student?.length + notificationsData?.notifications?.parent?.length > 0 && <div className="absolute bg-neutral-800 -bottom-15 right-2 p-5 w-96 hidden group-hover:flex flex-col rounded-xl">
             {/* tabs to switch between student and parent requests */}
             <div className="flex justify-between items-center">
               <button onClick={() => setSelectedTab("student")} className={`${selectedTab === "student" ? "bg-blue-500 text-white" : "bg-neutral-800 text-white"} px-5 py-2 rounded-xl`}>Student Requests</button>
@@ -159,6 +171,20 @@ function Topbar({ name }) {
                 >
                   <p className="text-sm font-semibold truncate">
                     New account request from {noti?.name}
+                  </p>
+                </li>
+              ))}
+            </ul>}
+          </div>}
+          {localStorage.getItem("parent") && notificationsData?.notifications?.length > 0 && <div className="absolute bg-neutral-800 -bottom-15 right-2 p-5 w-96 hidden group-hover:flex flex-col rounded-xl">
+            {isLoading ? <span>Loading...</span> : <ul className="[&>*:nth-child(1)]:border-t-0">
+              { notificationsData?.notifications?.map((noti, index) => (
+                <li
+                  key={index}
+                  className="py-5 px-5 flex justify-between items-center text-md border-t-[1px] border-neutral-500 transition-all hover:bg-neutral-900 hover:rounded-xl hover:scale-105 hover:shadow-xl hover:border-transparent"
+                >
+                  <p className="text-sm font-semibold truncate">
+                    {noti?.message}
                   </p>
                 </li>
               ))}

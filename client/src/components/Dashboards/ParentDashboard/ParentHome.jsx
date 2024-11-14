@@ -3,7 +3,6 @@ import { Doughnut } from "react-chartjs-2";
 import { useChildren } from './ChildrenContext';
 
 const Attendance = ({student}) => {
-    console.log("Student");
   const [totalDays, setTotalDays] = useState(0);
   const getAttendance = async () => {
       const res = await fetch("http://localhost:3000/api/attendance/get", {

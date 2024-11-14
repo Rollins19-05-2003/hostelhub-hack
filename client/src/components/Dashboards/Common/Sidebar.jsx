@@ -18,6 +18,8 @@ function Sidebar({ links }) {
   let logout = () => {
     localStorage.removeItem("student");
     localStorage.removeItem("token");
+    localStorage.removeItem("parent");
+    localStorage.removeItem("admin");
     navigate("/");
   };
   const [isOpen, setIsOpen] = useState(true);
