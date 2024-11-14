@@ -39,6 +39,7 @@ import LeaveRequest from "./../src/components/Dashboards/StudentDashboard/Leave"
 import AdminLeaveRequests from "./../src/components/Dashboards/AdminDashboard/LeaveOff";
 import Maintenance from "./components/Dashboards/StudentDashboard/Maintenance";
 import MaintenanceReq from "./components/Dashboards/AdminDashboard/MaintenanceReq";
+import Donation from "./components/Dashboards/StudentDashboard/Donation";
 function App() {
   return (
     <>
@@ -69,6 +70,7 @@ function App() {
           <Route path="settings" element={<Settings/>} />
           <Route path="leavereq" element={<LeaveRequest />} />
           <Route path="maintenance" element={<Maintenance/>} />
+          <Route path="donate" element={<Donation />} />
         </Route>
 
         {/* Admin Dashboard Routes */}

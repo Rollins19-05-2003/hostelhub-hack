@@ -25,6 +25,7 @@ app.use('/api/suggestion', require('./routes/suggestionRoutes'));
 app.use('/api/parent', require('./routes/parentRoutes'));
 app.use('/student', studentRoutes);
 app.use('/api/maintenance', require('./routes/maintenanceRoutes'));
+app.use('/api/donation', require('./routes/donationRoutes'));
 
 
 const server = app.listen(port, () => {
