@@ -159,6 +159,52 @@ const registerHostel = async (req, res) => {
     }
 }
 
+// const updateStudent = async (req, res) =>{
+//     try {
+//         let success = false;
+//         const errors = validationResult(req);
+//         if (!errors.isEmpty()) {
+//             return res.status(400).json({success, errors: errors.array()});
+//         }
+
+//         const { name, student_id, room_no, batch, dept, course, email, father_name, father_contact, contact, address, dob, hostel } = req.body;
+
+//         try {
+//             let student = await Student.findOne({email});
+
+//             if (!student) {
+//                 return res.status(400).json({success, errors: [{msg: 'Student does not exist'}]});
+//             }
+
+//             // Update student fields
+//             student.name = name;
+//             student.student_id = student_id;
+//             student.room_no = room_no;
+//             student.batch = batch;
+//             student.dept = dept;
+//             student.course = course;
+//             student.email = email;
+//             student.father_name = father_name;
+//             student.father_contact = father_contact;
+//             student.contact = contact;
+//             student.address = address;
+//             student.dob = dob;
+//             student.hostel = hostel;
+
+//             await student.save();
+
+//             success = true;
+//             res.json({success, student});
+
+//         } catch (error) {
+//             console.error('Error updating student:', error);
+//             res.status(500).send('Server error');
+//         }
+//     } catch (err) {
+//         console.error('Error in main try-catch:', err);
+//         res.status(500).json({success: false, errors: [{msg: 'Server error'}]});
+//     }
+// }
 
 const updateAdmin = async (req, res) => {
     try {
@@ -198,43 +244,6 @@ const updateAdmin = async (req, res) => {
     }
 }
 
-// const updateStudent = async (req, res) => {
-//     try {
-//         let success = false;
-//         const errors = validationResult(req);
-//         if (!errors.isEmpty()) {
-//             return res.status(400).json({success, errors: errors.array()});
-//         }
-
-//         const { name, student_id, room_no, batch, dept, course, email, father_name, father_contact, contact, address, dob, hostel, password} = req.body;
-
-//         try {
-//             let student = await Student.findOne({email});
-
-//             if (!student) {
-//                 return res.status(400).json({success, errors: [{msg: 'Student does not exists'}]});
-//             }
-
-//             student.name = name;
-//             student.email = email;
-//             student.father_name = father_name;
-//             student.contact = contact;
-//             student.address = address;
-//             student.dob = dob;
-//             student.cnic = cnic;
-
-//             await student.save();
-
-//             success = true;
-//             res.json({success, student});
-
-//         } catch (error) {
-//             res.status(500).send('Server error');
-//         }
-//     } catch (err) {
-//         res.status(500).json({success, errors: [{msg: 'Server error'}]});
-//     }
-// }
 
 const getHostel = async (req, res) => {
     try {
@@ -384,7 +393,6 @@ module.exports = {
     registerAdmin,
     registerHostel,
     updateAdmin,
-    // updateStudent,
     getAdmin,
     getHostel,
     deleteAdmin,

@@ -4,7 +4,6 @@ import { ToastContainer ,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import RegisterStudent from "./RegisterStudent";
 import {useNavigate} from "react-router-dom"
-// import { Student } from "../../../../../backend/models";
 
 function AllStudents() {
   const navigate = useNavigate();
@@ -149,7 +148,7 @@ function AllStudents() {
                   </p>
                 </div>
                 <div className="flex gap-3">
-                  <button className="hover:underline hover:text-green-600 hover:scale-125 transition-all" >
+                  <button className="hover:underline hover:text-green-600 hover:scale-125 transition-all" onClick={() => editStudentDetails(student)}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"

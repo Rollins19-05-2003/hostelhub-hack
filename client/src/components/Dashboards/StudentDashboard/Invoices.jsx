@@ -1,5 +1,5 @@
 import { useState, useEffect} from "react";
-
+import qrCode from "./../../../assets/qr-code.jpeg";
 function Invoices() {
   const [invoiceList, setInvoiceList] = useState([]);
   const [totalInvoices, setTotalInvoices] = useState(0);
@@ -132,6 +132,18 @@ function Invoices() {
               </li>
             ))}
           </ul>
+        <div className="mt-8 flex flex-col items-center">
+          <h3 className="text-lg font-medium text-white mb-4">Pay Using UPI</h3>
+          <div className="bg-white p-4 rounded-lg">
+            <img 
+              src={qrCode} 
+              alt="UPI Payment QR Code"
+              className="w-48 h-48 object-contain"
+            />
+          </div>
+          <p className="text-sm text-gray-400 mt-2">UPI ID: sdeb7433-1@oksbi</p>
+          <p className="text-sm text-gray-400">Scan to pay with any UPI app</p>
+        </div>
         </div>
       </div>
     </div>
