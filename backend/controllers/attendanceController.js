@@ -1,6 +1,15 @@
 const { validationResult } = require('express-validator');
 const { Student, Attendance } = require('../models');
 
+const markWithID = async (req, res) => {
+    console.log(req.body);
+    const { id } = req.body;
+    const date = new Date();
+    const student = await Student.findOne({ student_id: id });
+    const attendance = await Attendance.findOneAndUpdate({ student: student._id, date: { $gte: date.setHours(0, 0, 0, 0), $lt: date.setHours(23, 59, 59, 999) } }, { status: 'present' });
+    res.status(200).json(attendance);
+}
+
 const markAttendance = async (req, res) => {
     let success = false;
     const errors = validationResult(req);
@@ -74,6 +83,7 @@ module.exports = {
     markAttendance,
     getAttendance,
     updateAttendance,
-    getHostelAttendance
+    getHostelAttendance,
+    markWithID
 }
 

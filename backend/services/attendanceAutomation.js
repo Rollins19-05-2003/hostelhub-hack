@@ -3,8 +3,8 @@ const { Student, Attendance, LeaveForm,  AbsentNotification} = require('../model
 
 class AttendanceAutomation {
     constructor() {
-        this.morningTime = '00 00 * * *';  // 11:27 PM
-        this.eveningTime = '50 9 * * *'; // 10:00 PM
+        this.morningTime = '00 00 * * *';  // 11:43 AM
+        this.eveningTime = '00 22 * * *'; // 10:00 PM
         this.morningJob = null;
         this.eveningJob = null;
     }

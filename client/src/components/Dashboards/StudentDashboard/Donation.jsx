@@ -191,7 +191,7 @@ function Donation() {
                       </p>
                       <div className="flex justify-between items-center">
                         <p className="text-xs text-gray-500">
-                          Listed by: {item.student.name} ({item.student.room_no})
+                          Listed by: {item?.student?.name} ({item?.student?.room_no})
                         </p>
                         <p className="text-xs text-gray-500">
                           {new Date(item.date).toLocaleDateString()}
