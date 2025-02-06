@@ -9,7 +9,7 @@ function Topbar() {
   useEffect(() => {
     const fetchParentRequests = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/parent/get-requests");
+        const response = await fetch("https://hostelhub-hack-backend.vercel.app/api/parent/get-requests");
         const data = await response.json();
         if (data.success) {
           setParentRequestCount(data.notifications.parent.filter(req => req.status === 'pending').length);

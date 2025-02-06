@@ -5,7 +5,7 @@ import { useChildren } from './ChildrenContext';
 const Attendance = ({student}) => {
   const [totalDays, setTotalDays] = useState(0);
   const getAttendance = async () => {
-      const res = await fetch("http://localhost:3000/api/attendance/get", {
+      const res = await fetch("https://hostelhub-hack-backend.vercel.app/api/attendance/get", {
         method: "POST",
         headers:{
           "Content-Type": "application/json",

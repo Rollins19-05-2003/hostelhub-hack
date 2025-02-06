@@ -18,7 +18,7 @@ const List = () => {
   ]);
   useEffect(() => {
     let student = JSON.parse(localStorage.getItem("student"));
-    fetch("http://localhost:3000/api/invoice/student", {
+    fetch("https://hostelhub-hack-backend.vercel.app/api/invoice/student", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -125,7 +125,7 @@ function Home() {
 
   const getAttendance = async () => {
     let student = JSON.parse(localStorage.getItem("student"));
-    const res = await fetch("http://localhost:3000/api/attendance/get", {
+    const res = await fetch("https://hostelhub-hack-backend.vercel.app/api/attendance/get", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

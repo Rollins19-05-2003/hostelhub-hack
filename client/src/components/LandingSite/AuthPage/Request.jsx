@@ -44,7 +44,7 @@ export default function RequestRegistration() {
       };
       try {
   
-      const res = await fetch("http://localhost:3000/api/request/register", {
+      const res = await fetch("https://hostelhub-hack-backend.vercel.app/api/request/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -304,7 +304,7 @@ export default function RequestRegistration() {
 //       cms_id: inputCms,
 //     };
 
-//     fetch("http://localhost:3000/api/request/register", {
+//     fetch("https://hostelhub-hack-backend.vercel.app/api/request/register", {
 //       method: "POST",
 //       headers: {
 //         "Content-Type": "application/json",

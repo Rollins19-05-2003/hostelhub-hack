@@ -8,7 +8,7 @@ const Invoices = ({student}) => {
   const [paidInvoices, setPaidInvoices] = useState(0);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/invoice/student", {
+    fetch("https://hostelhub-hack-backend.vercel.app/api/invoice/student", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

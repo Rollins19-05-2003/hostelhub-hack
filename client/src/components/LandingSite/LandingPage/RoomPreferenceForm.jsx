@@ -26,7 +26,7 @@ function RoomPreferenceForm({ onSubmitSuccess }) {
 
   const fetchExistingPreference = async (sid) => {
     try {
-      const res = await fetch(`http://localhost:3000/student/getRoomPref/${sid}`);
+      const res = await fetch(`https://hostelhub-hack-backend.vercel.app/student/getRoomPref/${sid}`);
       if (res.ok) {
         const data = await res.json();
         // Populate form with existing data
@@ -48,7 +48,7 @@ function RoomPreferenceForm({ onSubmitSuccess }) {
       setLoading(true);
       const roomPref = { studentId, roomType, nonVeg, state, hobbies, branch };
       
-      const res = await fetch("http://localhost:3000/student/createRoomPref", {
+      const res = await fetch("https://hostelhub-hack-backend.vercel.app/student/createRoomPref", {
         method: "POST", // The backend will handle both create and update
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(roomPref),

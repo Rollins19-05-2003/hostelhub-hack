@@ -23,7 +23,7 @@ function MaintenanceReq() {
   const getRequests = async () => {
     setProgress(30);
     try {
-      const response = await fetch("http://localhost:3000/api/maintenance/get");
+      const response = await fetch("https://hostelhub-hack-backend.vercel.app/api/maintenance/get");
       setProgress(50);
       const data = await response.json();
       
@@ -58,7 +58,7 @@ function MaintenanceReq() {
 
   const updateStatus = async (id, status) => {
     try {
-      const response = await fetch("http://localhost:3000/api/maintenance/update", {
+      const response = await fetch("https://hostelhub-hack-backend.vercel.app/api/maintenance/update", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

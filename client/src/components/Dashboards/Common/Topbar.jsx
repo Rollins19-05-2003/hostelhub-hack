@@ -25,11 +25,11 @@ function Topbar({ name }) {
 
     //if current user is admin
     if (localStorage.getItem("admin")) {
-      response = await fetch(`http://localhost:3000/api/admin/get-notifications`);
+      response = await fetch(`https://hostelhub-hack-backend.vercel.app/api/admin/get-notifications`);
       const data = await response.json();
       return data;
     } else if (parent) {
-      response = await fetch(`http://localhost:3000/api/notification/get-notifications-by-student-id`, {
+      response = await fetch(`https://hostelhub-hack-backend.vercel.app/api/notification/get-notifications-by-student-id`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -49,7 +49,7 @@ function Topbar({ name }) {
   });
 
   useEffect(() => {
-    const newSocket = io("http://localhost:3000");
+    const newSocket = io("https://hostelhub-hack-backend.vercel.app");
     setSocket(newSocket);
 
     return () => newSocket.disconnect();

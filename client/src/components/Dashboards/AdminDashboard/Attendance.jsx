@@ -8,7 +8,7 @@ import LoadingBar from 'react-top-loading-bar'
 function Attendance() {
   const getALL = async () => {
     setProgress(30);
-    const marked = await fetch("http://localhost:3000/api/attendance/getHostelAttendance", {
+    const marked = await fetch("https://hostelhub-hack-backend.vercel.app/api/attendance/getHostelAttendance", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -46,7 +46,7 @@ function Attendance() {
   const [unmarked, setUnmarked] = useState(0);
 
   const markAttendance = async (id, status) => {
-    const data = await fetch(`http://localhost:3000/api/attendance/mark`, {
+    const data = await fetch(`https://hostelhub-hack-backend.vercel.app/attendance/markwithID:id`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

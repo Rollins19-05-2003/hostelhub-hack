@@ -11,7 +11,7 @@ function ParentRequests({ onClose }) {
 
   const fetchRequests = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/parent/get-requests");
+      const response = await fetch("https://hostelhub-hack-backend.vercel.app/api/parent/get-requests");
       const data = await response.json();
       if (data.success) {
         setRequests(data.requests.filter(req => req.status === 'pending'));
@@ -25,7 +25,7 @@ function ParentRequests({ onClose }) {
 
   const handleApprove = async (requestId) => {
     try {
-      const response = await fetch("http://localhost:3000/api/parent/approve-request", {
+      const response = await fetch("https://hostelhub-hack-backend.vercel.app/api/parent/approve-request", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

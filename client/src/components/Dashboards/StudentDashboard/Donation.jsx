@@ -16,7 +16,7 @@ function Donation() {
 
   const getDonations = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/donation/get");
+      const response = await fetch("https://hostelhub-hack-backend.vercel.app/api/donation/get");
       const data = await response.json();
       console.log("donations", data)
       if (data.success) {
@@ -56,7 +56,7 @@ function Donation() {
 
       console.log('Submitting donation:', payload); // Debug log
 
-      const response = await fetch("http://localhost:3000/api/donation/create", {
+      const response = await fetch("https://hostelhub-hack-backend.vercel.app/api/donation/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

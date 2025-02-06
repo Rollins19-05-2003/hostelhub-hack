@@ -11,7 +11,7 @@ function RoommatePreference() {
   const checkExistingPreference = async () => {
     const studentId = JSON.parse(localStorage.getItem("student")).student_id;
     try {
-      const res = await fetch(`http://localhost:3000/student/getPrefferedRoommate/${studentId}`);
+      const res = await fetch(`https://hostelhub-hack-backend.vercel.app/student/getPrefferedRoommate/${studentId}`);
       const data = await res.json();
       if (Array.isArray(data)) {
         setHasPreference(true);

@@ -63,7 +63,7 @@ function RegisterParent() {
       setLoading(true);
       const children_ids = childrenIds.split(",").map(id => parseInt(id.trim()));
       
-      const response = await fetch("http://localhost:3000/api/parent/approve-request", {
+      const response = await fetch("https://hostelhub-hack-backend.vercel.app/api/parent/approve-request", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

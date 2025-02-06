@@ -8,7 +8,7 @@ export function ChildrenProvider({ children }) {
   useEffect(() => {
     const parent = JSON.parse(localStorage.getItem("parent"));
     
-    fetch("http://localhost:3000/api/parent/get-children", {
+    fetch("https://hostelhub-hack-backend.vercel.app/api/parent/get-children", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -8,7 +8,7 @@ function LeaveOff() {
   const getRequests = async () => {
     setProgress(30);
     const hostel = JSON.parse(localStorage.getItem("hostel"));
-    const res = await fetch("http://localhost:3000/api/leaveoff/list", {
+    const res = await fetch("https://hostelhub-hack-backend.vercel.app/api/leaveoff/list", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +43,7 @@ function LeaveOff() {
   };
 
   const updateRequest = async (id, status) => {
-    const res = await fetch("http://localhost:3000/api/leaveoff/update", {
+    const res = await fetch("https://hostelhub-hack-backend.vercel.app/api/leaveoff/update", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

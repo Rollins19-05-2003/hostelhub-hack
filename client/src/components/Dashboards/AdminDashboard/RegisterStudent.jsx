@@ -32,7 +32,7 @@ function RegisterStudent() {
         hostel: hostel,
         password: password
       };
-      const res = await fetch("http://localhost:3000/api/student/register-student", {
+      const res = await fetch("https://hostelhub-hack-backend.vercel.app/api/student/register-student", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -66,7 +66,7 @@ function RegisterStudent() {
         setFatherContact("");
         setPassword("");
         setLoading(false);
-        await fetch("http://localhost:3000/api/student/update-student/" + newStudentData._id, {
+        await fetch("https://hostelhub-hack-backend.vercel.app/api/student/update-student/" + newStudentData._id, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",

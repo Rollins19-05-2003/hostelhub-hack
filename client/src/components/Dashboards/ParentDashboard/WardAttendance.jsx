@@ -8,7 +8,7 @@ function AttendanceChart({ studentId, studentName }) {
   const [daysUnmarked, setDaysUnmarked] = useState(0);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/attendance/get", {
+    fetch("https://hostelhub-hack-backend.vercel.app/api/attendance/get", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

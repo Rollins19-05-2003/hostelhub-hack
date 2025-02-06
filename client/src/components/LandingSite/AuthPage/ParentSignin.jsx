@@ -11,7 +11,7 @@ export default function AdminSignIn() {
 //   const getHostel = async () => {
 //     let admin = JSON.parse(localStorage.getItem("parent"));
 //     try {
-//     //   const res = await fetch("http://localhost:3000/api/admin/get-hostel", {
+//     //   const res = await fetch("https://hostelhub-hack-backend.vercel.app/api/admin/get-hostel", {
 //     //     method: "POST",
 //     //     headers: {
 //     //       "Content-Type": "application/json"
@@ -34,7 +34,7 @@ export default function AdminSignIn() {
       password: pass,
     };
 
-    let response = await fetch("http://localhost:3000/api/auth/login", {
+    let response = await fetch("https://hostelhub-hack-backend.vercel.app/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -46,7 +46,7 @@ export default function AdminSignIn() {
 
     if (result.success) {
       localStorage.setItem("token", result.data.token);
-      let parent = await fetch("http://localhost:3000/api/parent/get-parent", {
+      let parent = await fetch("https://hostelhub-hack-backend.vercel.app/api/parent/get-parent", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

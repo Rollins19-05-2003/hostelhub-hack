@@ -33,7 +33,7 @@ function Maintenance() {
   const getRequests = async () => {
     try {
       const student = JSON.parse(localStorage.getItem("student"));
-      const response = await fetch(`http://localhost:3000/api/maintenance/get/${student._id}`);
+      const response = await fetch(`https://hostelhub-hack-backend.vercel.app/api/maintenance/get/${student._id}`);
       
       const data = await response.json();
       if (data.success) {
@@ -65,7 +65,7 @@ function Maintenance() {
       setLoading(true);
       const student = JSON.parse(localStorage.getItem("student"));
       
-      const response = await fetch("http://localhost:3000/api/maintenance/create", {
+      const response = await fetch("https://hostelhub-hack-backend.vercel.app/api/maintenance/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

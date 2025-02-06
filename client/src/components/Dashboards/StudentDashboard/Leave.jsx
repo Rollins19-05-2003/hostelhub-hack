@@ -15,7 +15,7 @@ function Leave() {
       return_date: returnDate,
     };
 
-    let response = await fetch("http://localhost:3000/api/leaveoff/request", {
+    let response = await fetch("https://hostelhub-hack-backend.vercel.app/api/leaveoff/request", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -93,7 +93,7 @@ function Leave() {
     let student = JSON.parse(localStorage.getItem("student"));
     setLoading(true);
     if (student) {
-      fetch("http://localhost:3000/api/leaveoff/count", {
+      fetch("https://hostelhub-hack-backend.vercel.app/api/leaveoff/count", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
